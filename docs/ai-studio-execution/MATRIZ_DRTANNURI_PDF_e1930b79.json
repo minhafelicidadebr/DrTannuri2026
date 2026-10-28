@@ -1,0 +1,612 @@
+{
+  "schema_version": "1.0.0",
+  "prepared_date": "2026-10-19",
+  "language": "pt-BR",
+  "purpose": "Evidence-based instructions for Google AI Studio; not a code patch or an implemented feature set.",
+  "source_authority": [
+    "user_instructions",
+    "explicit_pdf_annotations",
+    "target_code",
+    "selected_donor_code",
+    "necessary_technical_dependency_fixes"
+  ],
+  "sources": {
+    "pdf": {
+      "name": "Correção Site Drtannuri 1.pdf",
+      "relative_path_in_kit": "fontes/Correcao_Site_Drtannuri_1.pdf",
+      "sha256": "0cc69f1fd25592fe860f286c3651384f5e3ad4ce54dce2efc7a9d344890dc603",
+      "pages": 12,
+      "review_method": "visual_review_all_pages_plus_text_extraction_and_source_comparison"
+    },
+    "target": {
+      "name": "copia.19.10.2026---dr.tannutri.zip",
+      "sha256": "03c6926de733fd68948b48cffef480fa9d0de88b5597aacdda5680178c63ad36",
+      "role": "base_application_to_modify",
+      "live_deployment_equivalence": "NOT_VERIFIED",
+      "included_in_kit": false
+    },
+    "donor": {
+      "name": "dr-luiz-tannuri-—-nutrição-esportiva (3).zip",
+      "sha256": "b88d0b9b0538802c601af26549bee506fb58154aa162912756da1627853a1261",
+      "role": "selected_story_diploma_testimonial_reference_only",
+      "included_in_kit": "selected_files_only"
+    },
+    "excluded": {
+      "name": "tannuri-flourish-main (2).zip",
+      "reason": "Different Academy product; not the Story and Testimonials donor shown in PDF pages 2-3."
+    }
+  },
+  "commercial_offers": [
+    {
+      "id": "diagnostico_inicial",
+      "name": "Diagnóstico Inicial de Precisão",
+      "price_cents_by_modality": {
+        "online": 45000,
+        "presencial": 75000
+      },
+      "billing_period": "one_off",
+      "initial_consultation_duration_minutes": 60,
+      "returns": {
+        "quantity": 1,
+        "interval_days": 15,
+        "duration_minutes": null
+      },
+      "included_bioimpedance_schedule": null
+    },
+    {
+      "id": "programa_metabolico",
+      "name": "Programa Metabolismo 12 Semanas",
+      "price_cents_by_modality": {
+        "online": 119900,
+        "presencial": 199900
+      },
+      "billing_period": "one_off",
+      "initial_consultation_duration_minutes": 60,
+      "returns": {
+        "quantity": 3,
+        "interval_days": 15,
+        "duration_minutes": null
+      },
+      "included_bioimpedance_schedule": {
+        "modality": "presencial",
+        "interval_days": 15,
+        "device": "InBody 120"
+      },
+      "external_app_label_from_pdf": "App Webidiet"
+    },
+    {
+      "id": "plano_assinatura",
+      "name": "Assinatura Acompanhamento Contínuo",
+      "price_cents_by_modality": {
+        "online": 25900,
+        "presencial": 42900
+      },
+      "billing_period": "monthly",
+      "billing_period_source": "existing monthly label on PDF page 9, not crossed out",
+      "initial_consultation_duration_minutes": 60,
+      "returns": {
+        "quantity": null,
+        "interval_days": 15,
+        "duration_minutes": null
+      },
+      "included_bioimpedance_schedule": {
+        "modality": "presencial",
+        "interval_days": 15,
+        "device": "InBody 120"
+      }
+    },
+    {
+      "id": "programa_longevidade_vip",
+      "name": "Performance & Longevidade Integrada",
+      "price_cents_by_modality": {
+        "online": 199900,
+        "presencial": 319900
+      },
+      "billing_period": "one_off",
+      "initial_consultation_duration_minutes": 60,
+      "returns": {
+        "quantity": 6,
+        "interval_days": 15,
+        "duration_minutes": null
+      },
+      "included_bioimpedance_schedule": {
+        "modality": "presencial",
+        "interval_days": 15,
+        "device": "InBody 120"
+      },
+      "remove_features": [
+        "direct_workout_sync_and_periodization",
+        "cgm_monitoring_and_interpretation"
+      ],
+      "travel_consulting_copy": "Consultoria de estratégias alimentares para viagens de negócios"
+    }
+  ],
+  "addon_changes": {
+    "id": "bioimpedancia_inbody",
+    "price_cents": 9900,
+    "device": "InBody 120",
+    "modality": "presencial",
+    "duration_minutes": 20,
+    "duration_source": "retained target/PDF card value, no explicit correction"
+  },
+  "unmodified_addon_prices_cents": {
+    "sensor_glicose": 49000,
+    "consultoria_cozinha": 28000
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "pdf_pages": [
+        1
+      ],
+      "action": "correct_and_preserve",
+      "scope": "Hero and first consultation duration",
+      "target_paths": [
+        "src/components/features/Hero.tsx",
+        "src/components/common/TrustStrip.tsx",
+        "src/data/canonicalCatalog.ts"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Initial consultation is 60 minutes.",
+        "Preserve green design and Hero composition.",
+        "CTA destinations exist after removals."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R02",
+      "pdf_pages": [
+        2
+      ],
+      "action": "port_selectively",
+      "scope": "Professional story, portrait and biography",
+      "target_paths": [
+        "src/App.tsx",
+        "src/components/features/ProfessionalStory.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Adapt donor Story to target callbacks and visual system.",
+        "No dependency on donor DemoProvider."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT",
+      "notes": [
+        "ProfessionalStory.tsx is a suggested new filename, not an existing target file.",
+        "Source: donor src/components/Story.tsx."
+      ]
+    },
+    {
+      "id": "R03",
+      "pdf_pages": [
+        3
+      ],
+      "action": "port_and_replace_asset",
+      "scope": "Four-document gallery and 6th-degree certificate",
+      "target_paths": [
+        "src/components/features/ProfessionalStory.tsx",
+        "src/data/professionalCredentials.ts",
+        "public/images/diplomas/"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Third indicated certificate uses Fabricio Team 6th Degree 2023 document.",
+        "Keep individual historical certificate labels truthful.",
+        "Full documents readable in accessible modal."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT",
+      "notes": [
+        "Suggested new files must be created/adapted if selected.",
+        "Donor diploma-jiujitsu-faixa-preta-2.png says fifth degree.",
+        "Correction PNG is a PDF reference crop, not an independently authenticated original."
+      ]
+    },
+    {
+      "id": "R04",
+      "pdf_pages": [
+        3
+      ],
+      "action": "port_selectively",
+      "scope": "Three athlete/executive testimonials",
+      "target_paths": [
+        "src/components/features/AthleteTestimonials.tsx",
+        "src/App.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Sergio Zimmermann, Zaid Mirza and Rodrigo Francioni Dias present with supplied assets.",
+        "No invented quotes or evidence badges.",
+        "Use target shared reviews components/contracts."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT",
+      "notes": [
+        "AthleteTestimonials.tsx is a suggested new file.",
+        "Source: donor src/components/Testimonials.tsx."
+      ]
+    },
+    {
+      "id": "R05",
+      "pdf_pages": [
+        4
+      ],
+      "action": "correct",
+      "scope": "Method, food card and equipment wording",
+      "target_paths": [
+        "src/components/features/MethodSection.tsx",
+        "src/data/canonicalCatalog.ts"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Marmitaria do Atleta identifies highlighted food card.",
+        "Exames Laboratoriais, Bioimpedância & TMB replaces highlighted biomarker wording.",
+        "Massa Magra e Gordura Corporal replaces highlighted visceral wording.",
+        "Dietas genéricas replaces pointed comparison wording.",
+        "InBody 120 replaces InBody 770 for the affected service.",
+        "No unsupported 770-only capabilities attributed to 120."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R06",
+      "pdf_pages": [
+        5
+      ],
+      "action": "remove_from_active_landing",
+      "scope": "Initial questionnaire and result block",
+      "target_paths": [
+        "src/App.tsx",
+        "src/components/features/SmartDiagnostic.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Not mounted or eagerly loaded from App.",
+        "No public CTA targets the removed questionnaire."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R07",
+      "pdf_pages": [
+        6
+      ],
+      "action": "remove_from_active_landing",
+      "scope": "Interactive lab and its simulators",
+      "target_paths": [
+        "src/App.tsx",
+        "src/components/features/InteractiveLab.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Not mounted or loaded into the active landing.",
+        "No public assistant action or navigation targets removed lab."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R08",
+      "pdf_pages": [
+        7
+      ],
+      "action": "remove_from_active_landing",
+      "scope": "Old program/protocol showcase",
+      "target_paths": [
+        "src/App.tsx",
+        "src/components/features/ProgramsSection.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Program showcase and its coordination block removed from landing.",
+        "Commercial PlansSection remains."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R09",
+      "pdf_pages": [
+        8
+      ],
+      "action": "remove_from_active_landing",
+      "scope": "Client portal demonstration",
+      "target_paths": [
+        "src/App.tsx",
+        "src/components/features/ClientPortalPreview.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Portal preview removed from landing.",
+        "Detailed page 9 commercial plan corrections remain in force."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R10",
+      "pdf_pages": [
+        9
+      ],
+      "action": "update_canonical_offers",
+      "scope": "Four commercial plans and two modalities",
+      "target_paths": [
+        "src/data/canonicalCatalog.ts",
+        "src/data/bookingServices.ts",
+        "src/types/index.ts",
+        "src/types/booking.ts",
+        "src/components/features/PlansSection.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "All eight modality-specific prices match commercial_offers.",
+        "Cards, booking, assistant and contact summary resolve same data.",
+        "Monthly return quantity remains unspecified.",
+        "App Webidiet mention does not imply implemented integration.",
+        "VIP crossed-out features removed.",
+        "Old installments are not reused."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R11",
+      "pdf_pages": [
+        10
+      ],
+      "action": "update_addon",
+      "scope": "Bioimpedance R$ 99, InBody 120",
+      "target_paths": [
+        "src/data/canonicalCatalog.ts",
+        "src/data/bookingServices.ts",
+        "src/components/features/addons/AddonCard.tsx",
+        "src/components/features/addons/AddonDetailModal.tsx"
+      ],
+      "evidence_kind": "explicit_pdf_annotation",
+      "acceptance": [
+        "Numeric value is 9900 cents or equivalent 99 reais, not 150.",
+        "Totals and WhatsApp use R$ 99.",
+        "In-person duration 20 min retained unless superseded.",
+        "Sensor R$ 490 and kitchen add-on R$ 280 remain independent."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    },
+    {
+      "id": "R12",
+      "pdf_pages": [
+        10,
+        11,
+        12
+      ],
+      "action": "preserve_and_reconcile",
+      "scope": "Evidence/scenarios, FAQ, final CTA and footer",
+      "target_paths": [
+        "src/components/features/SocialProof.tsx",
+        "src/components/features/FAQSection.tsx",
+        "src/components/features/FinalCTA.tsx",
+        "src/components/common/Footer.tsx"
+      ],
+      "evidence_kind": "preservation_of_unmarked_sections_and_required_consistency",
+      "acceptance": [
+        "Preserve unmarked closing sections.",
+        "Remove contradictions with deleted features, old durations and old prices.",
+        "Illustrative cases remain identified as illustrative."
+      ],
+      "implementation_status": "NOT_IMPLEMENTED_BY_THIS_KIT"
+    }
+  ],
+  "necessary_dependency_changes": [
+    {
+      "id": "D01",
+      "scope": "Navigation and actions",
+      "paths": [
+        "src/components/common/Header.tsx",
+        "src/components/common/Footer.tsx",
+        "src/components/features/Hero.tsx",
+        "src/App.tsx"
+      ],
+      "reason": "Removed section targets must not survive in public actions."
+    },
+    {
+      "id": "D02",
+      "scope": "Front-end assistant knowledge",
+      "paths": [
+        "src/data/aiSkillEngine.ts",
+        "src/components/common/ConciergeModal.tsx"
+      ],
+      "reason": "Existing responses contain old prices, 75-minute duration, InBody 770 and removed lab actions."
+    },
+    {
+      "id": "D03",
+      "scope": "Server assistant and alternative responses",
+      "paths": [
+        "server.ts"
+      ],
+      "reason": "System prompt and deterministic fallback duplicate outdated commercial data."
+    },
+    {
+      "id": "D04",
+      "scope": "Calendar duration",
+      "paths": [
+        "src/utils/calendarIcs.ts"
+      ],
+      "reason": "75-minute defaults and textual duration heuristics conflict with 60-minute consultation and 20-minute add-on."
+    },
+    {
+      "id": "D05",
+      "scope": "Booking ID reconciliation",
+      "paths": [
+        "src/data/bookingServices.ts",
+        "src/components/features/booking/BookingModal.tsx",
+        "src/components/features/booking/BookingStepModalityService.tsx",
+        "src/components/features/booking/BookingStepIntake.tsx",
+        "src/components/features/booking/BookingStepConfirmation.tsx"
+      ],
+      "reason": "Current plan IDs and booking service IDs diverge; service and modality must resolve together."
+    }
+  ],
+  "unresolved_factual_inputs": [
+    {
+      "id": "U01",
+      "topic": "Monthly subscription return count",
+      "known": "quinzenal",
+      "unknown": "quantity",
+      "handling": "Keep null and display retornos quinzenais; do not infer unlimited."
+    },
+    {
+      "id": "U02",
+      "topic": "12-week plan full calendar",
+      "known": "Name 12 Semanas and 3 fortnightly returns",
+      "unknown": "Full calendar beyond stated returns",
+      "handling": "Keep existing plan name; do not infer a different duration or invent visits."
+    },
+    {
+      "id": "U03",
+      "topic": "Return visit duration",
+      "known": "Initial consultation 60 minutes",
+      "unknown": "Duration of each return",
+      "handling": "Do not generate return calendar appointments without duration and times."
+    },
+    {
+      "id": "U04",
+      "topic": "External app",
+      "known": "PDF label App Webidiet",
+      "unknown": "Confirmed spelling, official URL and actual integration",
+      "handling": "Editable display label and informational benefit; no invented URL/API/login."
+    },
+    {
+      "id": "U05",
+      "topic": "Official contact details",
+      "known": "Donor and PDF identify Brasília; target contains São Paulo demo copy",
+      "unknown": "Confirmed phone, exact clinic address, registration and booking URL",
+      "handling": "Centralize and flag unresolved demo fields; do not invent official values."
+    },
+    {
+      "id": "U06",
+      "topic": "Certificate image original",
+      "known": "Corrected certificate shown on PDF page 3",
+      "unknown": "Availability of higher-resolution original",
+      "handling": "Use faithful reference crop for preview if needed; never regenerate document."
+    },
+    {
+      "id": "U07",
+      "topic": "Published build equivalence",
+      "known": "Target ZIP supplied as intended application base",
+      "unknown": "Exact live deployed revision",
+      "handling": "Work from verified target/project; do not claim live deployment parity."
+    }
+  ],
+  "source_porting_policy": {
+    "copy_entire_app": false,
+    "copy_donor_package_json": false,
+    "import_donor_DemoProvider": false,
+    "copy_only_required_assets": true,
+    "adapt_to_target_callbacks_and_design": true
+  },
+  "reviewed_sources_build_status": "NOT_RUN_SOURCE_REVIEW_ONLY",
+  "actual_application_changes_in_this_delivery": false,
+  "verification_instructions": {
+    "typecheck": "npm run lint (target script is tsc --noEmit)",
+    "build": "npm run build (frontend and server)",
+    "viewports_px": [
+      360,
+      390,
+      768,
+      1024,
+      1440
+    ],
+    "checks": [
+      "all_plans_each_modality",
+      "booking_id_match",
+      "calendar_duration",
+      "all_anchor_targets_exist",
+      "accessible_document_and_testimonial_modals",
+      "assistant_and_fallback_price_consistency"
+    ]
+  },
+  "reference_links": [
+    "https://ai.google.dev/gemini-api/docs/aistudio-build-mode",
+    "https://qr.inbody.com/ri/120/adult/pt-BR"
+  ],
+  "included_donor_files": [
+    {
+      "path": "referencia_doadora/src/components/Story.tsx",
+      "source_path": "src/components/Story.tsx",
+      "size_bytes": 35451,
+      "sha256": "da8777aebe8b77d7bd472449f57a08573aa7449a401066bf70778477b07e4a01"
+    },
+    {
+      "path": "referencia_doadora/src/components/Testimonials.tsx",
+      "source_path": "src/components/Testimonials.tsx",
+      "size_bytes": 21132,
+      "sha256": "107fe4a4caac0af7dd4ad83e69a10911b3a77c38d4e3bf30093ae21546f57200"
+    },
+    {
+      "path": "referencia_doadora/src/assets/images.ts",
+      "source_path": "src/assets/images.ts",
+      "size_bytes": 7702,
+      "sha256": "8cc9282e0a3272625239931a2adafd09827d78a72ab93cb2a7e93a97794818c8"
+    },
+    {
+      "path": "referencia_doadora/src/data/content.ts",
+      "source_path": "src/data/content.ts",
+      "size_bytes": 26538,
+      "sha256": "be450fbcb843cabb8d41dfc3cd8523258c7f579c0c04984d8ae2f1ad0ad574df"
+    },
+    {
+      "path": "referencia_doadora/public/images/tannuri/tannuri6.jpg",
+      "source_path": "public/images/tannuri/tannuri6.jpg",
+      "size_bytes": 606901,
+      "sha256": "b86a00638443418995a2a9737948818fc34bdc765b747ab9ddadaa47869a699e"
+    },
+    {
+      "path": "referencia_doadora/public/images/diplomas/diploma-pos-graduacao-nutricao.png",
+      "source_path": "public/images/diplomas/diploma-pos-graduacao-nutricao.png",
+      "size_bytes": 783187,
+      "sha256": "a4033db4e4a6e452fd08386eab0c7663f579ce34a09c1eafaf2a196c6fa9aeed"
+    },
+    {
+      "path": "referencia_doadora/public/images/diplomas/diploma-graduacao-nutricao.png",
+      "source_path": "public/images/diplomas/diploma-graduacao-nutricao.png",
+      "size_bytes": 790079,
+      "sha256": "7ed428699e51dfa117d71d066a6aa38e3bd220acb5969673c1284bad51ef9077"
+    },
+    {
+      "path": "referencia_doadora/public/images/diplomas/diploma-jiujitsu-faixa-preta-1.png",
+      "source_path": "public/images/diplomas/diploma-jiujitsu-faixa-preta-1.png",
+      "size_bytes": 1501164,
+      "sha256": "70c57bf20a77e148b9588e574810ff251463079b031a52b4687fe761c1460307"
+    },
+    {
+      "path": "referencia_doadora/public/images/diplomas/diploma-jiujitsu-faixa-preta-2.png",
+      "source_path": "public/images/diplomas/diploma-jiujitsu-faixa-preta-2.png",
+      "size_bytes": 1517764,
+      "sha256": "d6e70a50c7d9055ac5220a17ea68f4b5a34a5282d1421ef5d1c6b943e0f45116"
+    },
+    {
+      "path": "referencia_doadora/public/images/depoimentos/depoimento.sergiozimmermann.png",
+      "source_path": "public/images/depoimentos/depoimento.sergiozimmermann.png",
+      "size_bytes": 710203,
+      "sha256": "a07e525e92ddbde975a19444ff34d135161e65f61b591ef3834a1310b7f5c1fd"
+    },
+    {
+      "path": "referencia_doadora/public/images/depoimentos/depoimento.zaid.mirza.png",
+      "source_path": "public/images/depoimentos/depoimento.zaid.mirza.png",
+      "size_bytes": 519681,
+      "sha256": "99c71c3d4b5b1e347b8a34ceb41fbfdc6f0a5d5132c7c4aa869f657a42a1850b"
+    },
+    {
+      "path": "referencia_doadora/public/images/depoimentos/depoimento.rodrigo.francioni.png",
+      "source_path": "public/images/depoimentos/depoimento.rodrigo.francioni.png",
+      "size_bytes": 851367,
+      "sha256": "aaa0d34d5908f652ac25244945aee3686df18fbc108708922edb3efe86e9d3f4"
+    }
+  ],
+  "correction_asset": {
+    "path": "assets_correcao/certificado-6-grau-referencia-pdf.png",
+    "origin": "PDF page 3 clip, no AI regeneration",
+    "clip_pdf_points": [
+      501,
+      172,
+      588,
+      236
+    ],
+    "rasterization_scale": 8,
+    "sha256": "e6b0b55778dcabe4a7ba501655d0ce9be825b8e4a0309d9418b1ca6b542ff07a",
+    "independently_authenticated": false
+  }
+}

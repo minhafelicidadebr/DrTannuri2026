@@ -1,0 +1,8 @@
+{
+  "name": "Copia.19.10.2026 - Dr.Tannutri",
+  "description": "Imported from GitHub: minhafelicidadebr/drtannutri",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

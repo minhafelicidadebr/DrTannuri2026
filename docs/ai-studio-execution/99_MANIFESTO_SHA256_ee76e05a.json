@@ -1,0 +1,42 @@
+{
+  "package_version": "incremental-audit-2026-10-20.v1",
+  "current_archive_sha256": "e2c58485a4cad3fb0ec4c1944450b335076b38dcf42a55932d7d7bee80cde2f5",
+  "file_count_excluding_manifest": 7,
+  "files": [
+    {
+      "path": "00_LEIA_PRIMEIRO.md",
+      "sha256": "91100c15b2158ca90e6436e9ff9631be1f9a446ac49ec3b61bad4ae4b5f9877c",
+      "bytes": 3999
+    },
+    {
+      "path": "01_SUPERPROMPT_INCREMENTAL_AI_STUDIO.md",
+      "sha256": "04e68855ea4469efb5c82e5432044ddd4a9e0dc4373baae34f8652ff8ef9d269",
+      "bytes": 13568
+    },
+    {
+      "path": "02_DELTA_22_REQUISITOS.json",
+      "sha256": "3f7651be2500a77decae20023824945f08257dc5b150ce5bbcdbe38e8404bd90",
+      "bytes": 9664
+    },
+    {
+      "path": "03_CRITERIOS_DE_ACEITE.md",
+      "sha256": "332bde93f7f5a3b8698e82b8b028a0c1ed3856c4a80512cff96664e59af0d35f",
+      "bytes": 6753
+    },
+    {
+      "path": "04_MATRIZ_ORIGINAL_22_REQUISITOS.json",
+      "sha256": "3bca609e6e34f81b89830158d27e8ddfbcd013ceca04ccad971b76a3f842d5bd",
+      "bytes": 23384
+    },
+    {
+      "path": "05_AUDITORIA_DE_REFERENCIA.md",
+      "sha256": "1e372f8006ce36adf5490b3db6b4418613f28adf22f838c4ee58e2be34ca739a",
+      "bytes": 16990
+    },
+    {
+      "path": "reference/AuthorityRibbonDesignReference.tsx",
+      "sha256": "e6854b2474a006dfd632a6870de0f753293f8db5c19f2acedcbf5ca714bf37ff",
+      "bytes": 1327
+    }
+  ]
+}

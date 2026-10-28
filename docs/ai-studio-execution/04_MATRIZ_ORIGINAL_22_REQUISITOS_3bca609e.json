@@ -1,0 +1,719 @@
+{
+  "schema_version": "incremental-reference.v1",
+  "purpose": "Somente detalhes da intencao original; nao executar planos, importacoes ou alvo historico.",
+  "source_original_matrix_sha256": "8ccadf665a92ea08810cc87cc12019998eb855e27b976589f97955e5db9ac930",
+  "historical_target": {
+    "archive_name": "copia.19.10.2026---dr.tannutri.zip",
+    "sha256": "03c6926de733fd68948b48cffef480fa9d0de88b5597aacdda5680178c63ad36",
+    "role": "historical_only_not_current_base"
+  },
+  "requirements": [
+    {
+      "id": "R01",
+      "pdf_pages": [
+        1
+      ],
+      "action": "correct",
+      "title": "Identidade Dr. Luiz Tannuri",
+      "evidence": "Anotação Dr Tannuri vs Tannutri.",
+      "target_files": [
+        "src/data/canonicalCatalog.ts",
+        "index.html",
+        "metadata.json",
+        "server.ts",
+        "src/components/common/ConciergeModal.tsx"
+      ],
+      "acceptance": [
+        "Marca pública correta em UI, metadados e mensagens.",
+        "Não renomear domínio ou identificadores por substituição cega."
+      ]
+    },
+    {
+      "id": "R02",
+      "pdf_pages": [
+        1,
+        9,
+        11,
+        12
+      ],
+      "action": "correct",
+      "title": "Consulta de 60 minutos",
+      "evidence": "75 min circulado e substituído por 60 min; 60 min nas quatro colunas de planos.",
+      "target_files": [
+        "src/data/canonicalCatalog.ts",
+        "src/data/bookingServices.ts",
+        "src/components/common/TrustStrip.tsx",
+        "src/components/features/FinalCTA.tsx",
+        "src/utils/calendarIcs.ts",
+        "server.ts"
+      ],
+      "acceptance": [
+        "Consulta principal de 60 minutos em todas as superfícies.",
+        "Não alterar a duração de exames ou o texto de citações históricas."
+      ]
+    },
+    {
+      "id": "R03",
+      "pdf_pages": [
+        2
+      ],
+      "action": "import",
+      "title": "Trajetória profissional",
+      "evidence": "Adicionar do outro site sobre o bloco Do Tatame à Consulta.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/features/ProfessionalStory.tsx",
+        "src/data/professionalProfile.ts"
+      ],
+      "acceptance": [
+        "Conteúdo e retrato da referência adaptados aos tokens da base.",
+        "Biografia expandida com foco, Escape e retorno ao acionador."
+      ],
+      "reference_files": [
+        "src/components/Story.tsx",
+        "public/images/tannuri/tannuri6.jpg"
+      ]
+    },
+    {
+      "id": "R04",
+      "pdf_pages": [
+        2
+      ],
+      "action": "import",
+      "title": "Indicadores profissionais",
+      "evidence": "Faixa de indicadores anexada à trajetória na captura.",
+      "target_files": [
+        "src/components/features/ProfessionalAuthorityRibbon.tsx",
+        "src/data/professionalProfile.ts"
+      ],
+      "acceptance": [
+        "Preservar 30 anos, 6º grau, +1.000 alunos, +100 seminários e alcance como conteúdo fornecido.",
+        "Sem gerar novos títulos ou estatísticas."
+      ],
+      "reference_files": [
+        "src/components/AuthorityRibbon.tsx"
+      ]
+    },
+    {
+      "id": "R05",
+      "pdf_pages": [
+        3
+      ],
+      "action": "import",
+      "title": "Galeria de quatro credenciais",
+      "evidence": "Captura da galeria de diplomas da outra versão.",
+      "target_files": [
+        "src/components/features/CredentialsGallery.tsx",
+        "src/data/professionalProfile.ts"
+      ],
+      "acceptance": [
+        "Quatro documentos, proporção preservada e ampliação acessível.",
+        "Não atestar homologação institucional automaticamente."
+      ],
+      "reference_files": [
+        "src/components/Story.tsx",
+        "public/images/diplomas/"
+      ]
+    },
+    {
+      "id": "R06",
+      "pdf_pages": [
+        3
+      ],
+      "action": "replace",
+      "title": "Substituir o terceiro certificado",
+      "evidence": "Documento circulado com seta para o certificado Fabricio International Team da própria página.",
+      "target_files": [
+        "src/data/professionalProfile.ts",
+        "public/images/credenciais/certificado-jiujitsu-6-grau-2023.png"
+      ],
+      "acceptance": [
+        "Terceiro documento corresponde ao certificado de 6º grau de 2023 do PDF.",
+        "Não manter instituição do diploma anterior nem reconstruir o arquivo com IA."
+      ]
+    },
+    {
+      "id": "R07",
+      "pdf_pages": [
+        3
+      ],
+      "action": "import",
+      "title": "Três depoimentos de atletas/profissionais",
+      "evidence": "Captura dos cartões de Sergio, Zaid e Rodrigo.",
+      "target_files": [
+        "src/components/features/AthleteTestimonials.tsx",
+        "src/data/athleteTestimonials.ts",
+        "src/App.tsx"
+      ],
+      "acceptance": [
+        "Três relatos e fotos fornecidos, preservando atribuição e texto.",
+        "Fotos ampliadas não são descritas como prova documental de depoimento."
+      ],
+      "reference_files": [
+        "src/components/Testimonials.tsx",
+        "public/images/depoimentos/"
+      ]
+    },
+    {
+      "id": "R08",
+      "pdf_pages": [
+        4
+      ],
+      "action": "correct",
+      "title": "Marmitaria do Atleta",
+      "evidence": "Título e seta para o destaque gastronômico.",
+      "target_files": [
+        "src/components/features/MethodSection.tsx",
+        "src/data/canonicalCatalog.ts"
+      ],
+      "acceptance": [
+        "Nome literal no destaque apontado.",
+        "Não criar venda, estoque, entrega, preços ou checkout não especificados."
+      ]
+    },
+    {
+      "id": "R09",
+      "pdf_pages": [
+        4
+      ],
+      "action": "correct",
+      "title": "Campos do método",
+      "evidence": "Setas para exames/bioimpedância/TMB, gordura corporal e Dietas.",
+      "target_files": [
+        "src/components/features/MethodSection.tsx",
+        "src/data/canonicalCatalog.ts"
+      ],
+      "acceptance": [
+        "Exames laboratoriais, bioimpedância e TMB.",
+        "Massa magra e gordura corporal.",
+        "Dietas genéricas com concordância correta."
+      ]
+    },
+    {
+      "id": "R10",
+      "pdf_pages": [
+        4,
+        10
+      ],
+      "action": "correct",
+      "title": "Modelo InBody 120",
+      "evidence": "770 circulado com substituição por 120.",
+      "target_files": [
+        "src/data/canonicalCatalog.ts",
+        "src/data/imageAssets.ts",
+        "src/data/bookingServices.ts",
+        "src/data/aiSkillEngine.ts",
+        "src/components/features/MethodSection.tsx",
+        "server.ts"
+      ],
+      "acceptance": [
+        "Modelo 120 coerente em UI, IA, agenda, imagens e modal.",
+        "Revisar especificações; não herdar automaticamente os recursos do 770."
+      ]
+    },
+    {
+      "id": "R11",
+      "pdf_pages": [
+        5
+      ],
+      "action": "remove",
+      "title": "SmartDiagnostic",
+      "evidence": "Grande X sobre o mapa metabólico e seu resultado.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/features/SmartDiagnostic.tsx",
+        "src/components/common/Header.tsx",
+        "src/components/features/Hero.tsx"
+      ],
+      "acceptance": [
+        "Seção e resultados não renderizam.",
+        "Sem CTAs/âncoras pendentes para o diagnóstico online."
+      ]
+    },
+    {
+      "id": "R12",
+      "pdf_pages": [
+        6
+      ],
+      "action": "remove",
+      "title": "InteractiveLab e cinco simuladores",
+      "evidence": "Grande X sobre o laboratório interativo.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/features/InteractiveLab.tsx",
+        "src/components/features/MetabolicTwin.tsx",
+        "src/components/features/PilotDay.tsx",
+        "src/components/features/GlucoseSim.tsx",
+        "src/components/features/BodyDashboard.tsx",
+        "src/components/features/Projection12w.tsx"
+      ],
+      "acceptance": [
+        "Laboratório e cinco simuladores fora do fluxo ativo.",
+        "Mini-painel educativo do Hero da página 1 não é removido por associação."
+      ]
+    },
+    {
+      "id": "R13",
+      "pdf_pages": [
+        7
+      ],
+      "action": "remove",
+      "title": "Antigos protocolos de ProgramsSection",
+      "evidence": "Grande X sobre os quatro cartões de protocolos.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/features/ProgramsSection.tsx",
+        "src/data/canonicalCatalog.ts",
+        "src/data/aiSkillEngine.ts",
+        "server.ts"
+      ],
+      "acceptance": [
+        "Protocolos antigos não são vendidos na página nem pela IA.",
+        "Planos corrigidos da página 9 são preservados."
+      ]
+    },
+    {
+      "id": "R14",
+      "pdf_pages": [
+        8,
+        9
+      ],
+      "action": "remove",
+      "title": "Demonstração de portal próprio",
+      "evidence": "Grande X sobre Seu Acompanhamento por Dentro; página 9 detalha planos a manter.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/features/ClientPortalPreview.tsx",
+        "src/components/common/Footer.tsx",
+        "src/data/canonicalCatalog.ts"
+      ],
+      "acceptance": [
+        "Prévia de portal removida.",
+        "PlansSection mantida devido às anotações específicas da página 9.",
+        "App Webidiet não é apresentado como portal próprio integrado."
+      ]
+    },
+    {
+      "id": "R15",
+      "pdf_pages": [
+        9
+      ],
+      "action": "reprice",
+      "title": "Quatro planos e oito preços",
+      "evidence": "Quatro colunas de correções comerciais.",
+      "target_files": [
+        "src/data/serviceCatalog.ts",
+        "src/data/canonicalCatalog.ts",
+        "src/data/bookingServices.ts",
+        "src/components/features/PlansSection.tsx",
+        "src/types/index.ts",
+        "src/types/booking.ts"
+      ],
+      "acceptance": [
+        "Valores exatos por modalidade, durações e retornos conforme o catálogo deste manifesto.",
+        "Sem parcelamentos antigos e sem preços duplicados."
+      ]
+    },
+    {
+      "id": "R16",
+      "pdf_pages": [
+        9
+      ],
+      "action": "correct",
+      "title": "App Webidiet e retornos",
+      "evidence": "Portal próprio riscado e substituído por App Webidiet; check-ins substituídos por retornos.",
+      "target_files": [
+        "src/data/serviceCatalog.ts",
+        "src/data/canonicalCatalog.ts",
+        "src/components/features/PlansSection.tsx",
+        "src/components/features/FAQSection.tsx"
+      ],
+      "acceptance": [
+        "Grafia literal App Webidiet, sem inventar URL ou integração.",
+        "Retornos quinzenais substituem check-ins no trecho apontado."
+      ]
+    },
+    {
+      "id": "R17",
+      "pdf_pages": [
+        9
+      ],
+      "action": "remove_feature",
+      "title": "Benefícios riscados do premium",
+      "evidence": "X em sincronização de treino e CGM; risco sobre a expressão meal prep.",
+      "target_files": [
+        "src/data/serviceCatalog.ts",
+        "src/data/canonicalCatalog.ts",
+        "src/data/aiSkillEngine.ts",
+        "server.ts"
+      ],
+      "acceptance": [
+        "Não incluir sincronização de treino ou CGM no plano premium.",
+        "Substituir a linha de meal prep por estratégias para viagens, preservando esse suporte.",
+        "CGM e consultoria de cozinha continuam como add-ons."
+      ]
+    },
+    {
+      "id": "R18",
+      "pdf_pages": [
+        10
+      ],
+      "action": "reprice",
+      "title": "Bioimpedância por R$ 99",
+      "evidence": "150 circulado com seta para 99.",
+      "target_files": [
+        "src/data/serviceCatalog.ts",
+        "src/data/canonicalCatalog.ts",
+        "src/data/bookingServices.ts",
+        "src/components/features/PlansSection.tsx",
+        "src/components/features/addons/AddonDetailModal.tsx",
+        "server.ts"
+      ],
+      "acceptance": [
+        "InBody 120 avulso R$ 99, presencial.",
+        "Sensor R$ 490 e consultoria R$ 280 preservados.",
+        "Soma de três add-ons escolhidos explicitamente: R$ 869."
+      ]
+    },
+    {
+      "id": "R19",
+      "pdf_pages": [
+        1,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12
+      ],
+      "action": "reconcile",
+      "title": "Navegação, FAQ, CTAs e assistente",
+      "evidence": "Dependência necessária das remoções e da nova oferta.",
+      "target_files": [
+        "src/App.tsx",
+        "src/components/common/Header.tsx",
+        "src/components/common/Footer.tsx",
+        "src/components/features/Hero.tsx",
+        "src/components/features/FAQSection.tsx",
+        "src/components/features/FinalCTA.tsx",
+        "src/components/common/ConciergeModal.tsx",
+        "src/data/aiSkillEngine.ts",
+        "server.ts"
+      ],
+      "acceptance": [
+        "Nenhum link para seção removida.",
+        "Respostas comerciais determinísticas pelo catálogo único.",
+        "Nenhum fluxo ativo vende os protocolos removidos."
+      ]
+    },
+    {
+      "id": "R20",
+      "pdf_pages": [
+        9,
+        10,
+        12
+      ],
+      "action": "integrate",
+      "title": "Agenda, preços e calendário coerentes",
+      "evidence": "A mudança comercial exige atualização do catálogo independente do booking.",
+      "target_files": [
+        "src/components/features/booking/BookingModal.tsx",
+        "src/components/features/booking/BookingStepModalityService.tsx",
+        "src/components/features/booking/BookingStepDateTime.tsx",
+        "src/components/features/booking/BookingStepIntake.tsx",
+        "src/components/features/booking/BookingStepConfirmation.tsx",
+        "src/utils/calendarIcs.ts"
+      ],
+      "acceptance": [
+        "Cada CTA mantém o plano correto por ID.",
+        "Preço recalculado por modalidade em todos os passos.",
+        "Evento da consulta com 60 minutos e data/fuso corretos.",
+        "Sem confirmação falsa de reserva ou envio."
+      ]
+    },
+    {
+      "id": "R21",
+      "pdf_pages": [
+        10,
+        11,
+        12
+      ],
+      "action": "retain",
+      "title": "Aplicações práticas, FAQ, CTA e rodapé",
+      "evidence": "Páginas sem marcação de exclusão.",
+      "target_files": [
+        "src/components/features/SocialProof.tsx",
+        "src/components/features/FAQSection.tsx",
+        "src/components/features/FinalCTA.tsx",
+        "src/components/common/Footer.tsx"
+      ],
+      "acceptance": [
+        "Módulos mantidos, com textos coerentes com a oferta atual.",
+        "Cenários ilustrativos continuam identificados como ilustrativos."
+      ]
+    },
+    {
+      "id": "R22",
+      "pdf_pages": [
+        1,
+        2,
+        3,
+        4,
+        9,
+        10,
+        11,
+        12
+      ],
+      "action": "quality",
+      "title": "Responsividade, acessibilidade e acabamento",
+      "evidence": "Adaptação dos blocos ao aplicativo existente.",
+      "target_files": [
+        "src/components/features/ProfessionalStory.tsx",
+        "src/components/features/CredentialsGallery.tsx",
+        "src/components/features/AthleteTestimonials.tsx",
+        "src/components/features/PlansSection.tsx",
+        "src/index.css"
+      ],
+      "acceptance": [
+        "Sem mistura involuntária de fontes/tokens dos dois apps.",
+        "360/390/768/1440 px, zoom 200%, teclado e movimento reduzido.",
+        "Build e lint executados e registrados, sem declarar aprovação fictícia."
+      ]
+    }
+  ],
+  "commercial_catalog": {
+    "currency": "BRL",
+    "price_unit": "integer_cents",
+    "plans": [
+      {
+        "id": "diagnostico_inicial",
+        "name": "Diagnóstico Inicial de Precisão",
+        "kind": "plan",
+        "active": true,
+        "allowed_modalities": [
+          "online",
+          "presencial"
+        ],
+        "prices_cents": {
+          "online": 45000,
+          "presencial": 75000
+        },
+        "appointment_duration_minutes": 60,
+        "follow_up_count": 1,
+        "follow_up_cadence_days": 15,
+        "follow_up_duration_minutes": null,
+        "billing_period": "one_time",
+        "bioimpedance": {
+          "execution_modality": "presencial",
+          "cadence_days": null,
+          "online_inclusion": null
+        },
+        "app_label": null,
+        "pdf_page": 9
+      },
+      {
+        "id": "programa_metabolico",
+        "name": "Programa Metabolismo 12 Semanas",
+        "kind": "plan",
+        "active": true,
+        "allowed_modalities": [
+          "online",
+          "presencial"
+        ],
+        "prices_cents": {
+          "online": 119900,
+          "presencial": 199900
+        },
+        "appointment_duration_minutes": 60,
+        "follow_up_count": 3,
+        "follow_up_cadence_days": 15,
+        "follow_up_duration_minutes": null,
+        "billing_period": "one_time",
+        "bioimpedance": {
+          "execution_modality": "presencial",
+          "cadence_days": 15,
+          "online_inclusion": null
+        },
+        "app_label": "App Webidiet",
+        "app_url": null,
+        "name_duration_source": "Nome de 12 Semanas mantido na captura; não derivar duração total pelo número de retornos.",
+        "pdf_page": 9
+      },
+      {
+        "id": "plano_assinatura",
+        "name": "Assinatura Acompanhamento Contínuo",
+        "kind": "plan",
+        "active": true,
+        "allowed_modalities": [
+          "online",
+          "presencial"
+        ],
+        "prices_cents": {
+          "online": 25900,
+          "presencial": 42900
+        },
+        "appointment_duration_minutes": 60,
+        "follow_up_count": null,
+        "follow_up_cadence_days": 15,
+        "follow_up_duration_minutes": null,
+        "billing_period": "month",
+        "billing_period_source": "Contexto mensal da oferta existente, sem alteração expressa de periodicidade no PDF.",
+        "bioimpedance": {
+          "execution_modality": "presencial",
+          "cadence_days": 15,
+          "online_inclusion": null
+        },
+        "pdf_page": 9
+      },
+      {
+        "id": "programa_longevidade_vip",
+        "name": "Performance & Longevidade Integrada",
+        "kind": "plan",
+        "active": true,
+        "allowed_modalities": [
+          "online",
+          "presencial"
+        ],
+        "prices_cents": {
+          "online": 199900,
+          "presencial": 319900
+        },
+        "appointment_duration_minutes": 60,
+        "follow_up_count": 6,
+        "follow_up_cadence_days": 15,
+        "follow_up_duration_minutes": null,
+        "billing_period": "one_time",
+        "bioimpedance": {
+          "execution_modality": "presencial",
+          "cadence_days": 15,
+          "online_inclusion": null
+        },
+        "app_label": "App Webidiet",
+        "app_url": null,
+        "inherited_from": "programa_metabolico",
+        "inheritance_rule": "Seis retornos substituem os três do plano de origem; não somar.",
+        "excluded_included_benefits": [
+          "Sincronização direta com plano de treino e periodização esportiva",
+          "Sensor CGM incluso ou sua interpretação como benefício incluído",
+          "Consultoria de meal prep incluída"
+        ],
+        "retained_feature_after_edit": "Estratégias alimentares para viagens de negócios",
+        "pdf_page": 9
+      }
+    ],
+    "addons": [
+      {
+        "id": "bioimpedancia_inbody",
+        "name": "Exame de bioimpedância InBody 120",
+        "kind": "addon",
+        "active": true,
+        "allowed_modalities": [
+          "presencial"
+        ],
+        "prices_cents": {
+          "presencial": 9900
+        },
+        "appointment_duration_minutes": 20,
+        "duration_source": "20 min preservados da oferta existente; 17 segundos de medição do aparelho não são a duração do atendimento.",
+        "model": "InBody 120",
+        "pdf_page": 10
+      },
+      {
+        "id": "sensor_glicose",
+        "name": "Sensor contínuo de glicose + análise de dados (14 dias)",
+        "kind": "addon",
+        "active": true,
+        "allowed_modalities": [
+          "presencial",
+          "online"
+        ],
+        "prices_cents": {
+          "presencial": 49000,
+          "online": 49000
+        },
+        "appointment_duration_minutes": null,
+        "device_wear_duration_days": 14,
+        "conditions_source": "Oferta da base mantida na página 10; não confundir duração do sensor com duração da consulta.",
+        "pdf_page": 10
+      },
+      {
+        "id": "consultoria_cozinha",
+        "name": "Consultoria de cozinha e preparação de refeições",
+        "kind": "addon",
+        "active": true,
+        "allowed_modalities": [
+          "online"
+        ],
+        "prices_cents": {
+          "online": 28000
+        },
+        "appointment_duration_minutes": 60,
+        "conditions_source": "Oferta da base mantida na página 10.",
+        "pdf_page": 10
+      }
+    ],
+    "all_addons_example_total_cents": 86900,
+    "new_installments": null,
+    "create_payment_processing": false
+  },
+  "assumptions_and_open_details": [
+    {
+      "id": "A01",
+      "topic": "X da página 8 atravessa início dos planos",
+      "resolution": "Remover portal; preservar os quatro planos porque a página 9 traz correções específicas.",
+      "type": "specific_annotation_precedence"
+    },
+    {
+      "id": "A02",
+      "topic": "Periodicidade da assinatura",
+      "resolution": "Manter contexto mensal herdado da base, explicitando a origem na documentação. Não criar cobrança recorrente real.",
+      "type": "inherited_context"
+    },
+    {
+      "id": "A03",
+      "topic": "Quantidade e duração de retornos não informadas",
+      "resolution": "Quantidade da assinatura e duração dos retornos ficam null; não preencher por suposição.",
+      "type": "unspecified"
+    },
+    {
+      "id": "A04",
+      "topic": "Título 12 Semanas e três retornos",
+      "resolution": "Manter título não riscado. Não calcular um novo período total nem agendar retornos automaticamente.",
+      "type": "retain_unmarked_content"
+    },
+    {
+      "id": "A05",
+      "topic": "Bioimpedância dos planos online",
+      "resolution": "Exame é presencial; inclusão no valor online não está esclarecida. Não prometer exame remoto ou rede parceira.",
+      "type": "external_business_detail"
+    },
+    {
+      "id": "A06",
+      "topic": "Grafia e URL do App Webidiet",
+      "resolution": "Usar literal do PDF; URL null até configuração confirmada; não assumir WebDiet nem integrar um serviço por semelhança.",
+      "type": "external_business_detail"
+    },
+    {
+      "id": "A07",
+      "topic": "Operação da Marmitaria do Atleta",
+      "resolution": "Alterar o destaque informativo; não inventar cardápio, venda, estoque, preço ou entrega.",
+      "type": "unspecified"
+    },
+    {
+      "id": "A08",
+      "topic": "CGM e meal prep no premium versus add-ons",
+      "resolution": "Retirar benefícios incluídos indicados na página 9, preservar os add-ons da página 10.",
+      "type": "scoped_removal"
+    },
+    {
+      "id": "A09",
+      "topic": "Agenda e contato",
+      "resolution": "Preservar integrações reais se existirem; sem integração, preparar solicitação honesta sem afirmar reserva ou mensagem enviada. Não inventar telefone/URL/CRN.",
+      "type": "observed_implementation_dependency"
+    }
+  ],
+  "current_base_sha256": "e2c58485a4cad3fb0ec4c1944450b335076b38dcf42a55932d7d7bee80cde2f5",
+  "status_source": "02_DELTA_22_REQUISITOS.json"
+}

@@ -1,0 +1,66 @@
+{
+  "schema_version": "audit-delta.v1",
+  "audit_date": "2026-10-20",
+  "language": "pt-BR",
+  "purpose": "Matriz incremental de auditoria para preparar um proximo comando ao Google AI Studio; nao e patch nem confirmacao de publicacao.",
+  "audited_base": {
+    "archive": "copia.19.10.2026---dr.tannutri (1).zip",
+    "sha256": "e2c58485a4cad3fb0ec4c1944450b335076b38dcf42a55932d7d7bee80cde2f5",
+    "deployed_equivalence": "not_verified"
+  },
+  "references": {
+    "previous_archive_sha256": "03c6926de733fd68948b48cffef480fa9d0de88b5597aacdda5680178c63ad36",
+    "client_pdf_sha256": "0cc69f1fd25592fe860f286c3651384f5e3ad4ce54dce2efc7a9d344890dc603",
+    "new_requirement_matrix": "02_REQUISITOS_EXECUCAO.json",
+    "previous_embedded_kit_requirement_groups": 12
+  },
+  "assessment_method": "static_source_diff_plus_asset_inspection_and_catalog_checks",
+  "statuses": {
+    "concluido_no_fluxo_ativo": 7,
+    "parcial": 13,
+    "pendente": 2
+  },
+  "preserve_without_reimplementation": ["R06", "R08", "R09", "R12", "R13", "R16", "R17"],
+  "requirements": [
+    {"id": "R01", "status": "parcial", "delta": "Remover textos Dr. Tanutri/Tannutri de marca publica, metadados, alt e respostas; sem renomear dominios e IDs cegamente.", "evidence": ["metadata.json", "src/components/common/Header.tsx:324", "src/components/features/MethodSection.tsx:433", "server.ts:154"]},
+    {"id": "R02", "status": "parcial", "delta": "Manter consulta principal de 60 minutos; tratar depoimento legado que diz 75 minutos sem adulterar fala; sensor de 14 dias tem duracao de atendimento nao informada.", "evidence": ["src/data/canonicalCatalog.ts:34-162", "src/data/googleReviewsData.ts:45-46", "src/utils/calendarIcs.ts:26-30"]},
+    {"id": "R03", "status": "parcial", "delta": "Conservar retrato e narrativa; corrigir foco, teclado e retorno ao acionador nos modais biograficos.", "evidence": ["src/App.tsx:86-94", "src/components/features/ProfessionalStory.tsx:35-70"]},
+    {"id": "R04", "status": "pendente", "delta": "Adaptar faixa de indicadores da doadora aos tokens da base, apos confirmacao de 30 anos, 6o grau, mais de mil alunos, mais de cem seminarios e alcance.", "evidence": ["src/App.tsx:86-98", "reference/src/components/AuthorityRibbon.tsx"]},
+    {"id": "R05", "status": "parcial", "delta": "Conservar quatro imagens e galeria; substituir alegacoes de homologacao/verificacao automatica e completar gestao de foco do lightbox.", "evidence": ["src/data/professionalCredentials.ts:38-83", "src/components/features/ProfessionalStory.tsx:237-307"]},
+    {"id": "R06", "status": "concluido_no_fluxo_ativo", "delta": "Nao importar outra vez; terceiro item ja usa certificado 6o grau 2023. Opcional: usar rasterizacao mais legivel do novo pacote, sem editar o documento.", "evidence": ["src/data/professionalCredentials.ts:61-71", "public/assets/aistudio/certificado-6-grau-referencia-pdf_e6b0b557.png"]},
+    {"id": "R07", "status": "parcial", "delta": "Manter tres testemunhos e texto integral do doador; remover alegacao de comprovacao independente nao demonstrada e validar atribuicao com cliente.", "evidence": ["src/data/professionalCredentials.ts:88-148", "src/components/features/AthleteTestimonials.tsx:294-346"]},
+    {"id": "R08", "status": "concluido_no_fluxo_ativo", "delta": "Conservar titulo Marmitaria do Atleta sem inventar loja ou entrega.", "evidence": ["src/components/features/MethodSection.tsx:184"]},
+    {"id": "R09", "status": "concluido_no_fluxo_ativo", "delta": "Conservar campos corrigidos do metodo.", "evidence": ["src/components/features/MethodSection.tsx:36", "src/components/features/MethodSection.tsx:81", "src/components/features/MethodSection.tsx:347"]},
+    {"id": "R10", "status": "parcial", "delta": "Substituir foto que mostra InBody 770; corrigir alt e caption do ativo para InBody 120 ou imagem neutra, sem afirmar capacidade nao comprovada.", "evidence": ["src/data/imageAssets.ts:115-119", "src/assets/images/addon_inbody_scan_1789482327988.jpg"]},
+    {"id": "R11", "status": "parcial", "delta": "Manter SmartDiagnostic fora de App; corrigir CTA do Header que aponta para id diagnostico ausente.", "evidence": ["src/App.tsx", "src/components/common/Header.tsx:168"]},
+    {"id": "R12", "status": "concluido_no_fluxo_ativo", "delta": "Nao reativar InteractiveLab nem cinco simuladores; conservar mini painel ilustrativo do Hero, corrigindo chamada Ao vivo se necessario.", "evidence": ["src/App.tsx", "src/components/features/Hero.tsx:201-220"]},
+    {"id": "R13", "status": "concluido_no_fluxo_ativo", "delta": "Nao reimportar ProgramsSection nem protocolos antigos; codigo legado nao e secao ativa.", "evidence": ["src/App.tsx", "src/data/canonicalCatalog.ts:364-365"]},
+    {"id": "R14", "status": "parcial", "delta": "Manter portal preview fora do fluxo; retirar promessas de portal proprio do metodo e do Hero.", "evidence": ["src/App.tsx", "src/components/features/MethodSection.tsx:65", "src/components/features/Hero.tsx:157"]},
+    {"id": "R15", "status": "parcial", "delta": "Preservar 8 valores corretos; derivar booking e respostas comerciais de catalogo compartilhado; renderizar beneficios conforme modalidade, sem prometer bioimpedancia online ou incluida no plano inicial.", "evidence": ["src/data/canonicalCatalog.ts:34-162", "src/data/bookingServices.ts:4-52", "src/data/aiSkillEngine.ts:78-101", "server.ts:48-66"]},
+    {"id": "R16", "status": "concluido_no_fluxo_ativo", "delta": "Preservar literal App Webidiet e retornos quinzenais; nao inventar integracao/URL.", "evidence": ["src/data/canonicalCatalog.ts:83-89", "src/data/canonicalCatalog.ts:100-155"]},
+    {"id": "R17", "status": "concluido_no_fluxo_ativo", "delta": "Manter CGM e consultoria apenas como adicionais; preservar estrategias alimentares de viagem no VIP, sem sincronizacao de treino incluida.", "evidence": ["src/data/canonicalCatalog.ts:135-163", "src/data/canonicalCatalog.ts:190-269"]},
+    {"id": "R18", "status": "parcial", "delta": "Conservar 99/490/280 e total 869; transformar valores duplicados em centavos no catalogo; nao afirmar checkout ou agendamento pelo WhatsApp sem destino validado.", "evidence": ["src/data/canonicalCatalog.ts:190-269", "src/components/features/PlansSection.tsx:53-67", "src/data/bookingServices.ts:54-90"]},
+    {"id": "R19", "status": "parcial", "delta": "Eliminar ancora inexistente, marca antiga e propaganda de portal; fazer IA consumir catalogo deterministico inclusive com API ativa; verificar prova social e dados regionais.", "evidence": ["src/components/common/Header.tsx:168", "src/data/googleReviewsData.ts:14-22", "server.ts:159-230"]},
+    {"id": "R20", "status": "pendente", "delta": "Substituir confirmacao de horario ficticio por solicitacao pendente ate backend real; precos por modalidade em todas as etapas, data/fuso Brasilia, duracoes por servico, integridade do ICS e afirmacoes honestas de envio.", "evidence": ["src/data/bookingServices.ts:94-129", "src/components/features/booking/BookingModal.tsx:108-132", "src/components/features/booking/BookingStepConfirmation.tsx:48-55", "src/utils/calendarIcs.ts:26-43"]},
+    {"id": "R21", "status": "parcial", "delta": "Manter casos/FAQ/CTA/rodape; sanear registro profissional/CRN, Google Reviews e promessa de retorno de lead em memoria sem sistema operacional real.", "evidence": ["src/App.tsx:106-122", "src/components/common/Footer.tsx:83-94", "server.ts:234-258"]},
+    {"id": "R22", "status": "parcial", "delta": "Testar viewports e zoom, foco/teclado de modais e cartoes, regras reduced-motion e tipografia legivel; ainda nao foi possivel inspecao visual runtime.", "evidence": ["src/components/features/ProfessionalStory.tsx:315-472", "src/components/features/AthleteTestimonials.tsx:294-350", "src/components/features/addons/AddonCard.tsx:45-103", "src/index.css:24-70"]}
+  ],
+  "cross_cutting_priorities": [
+    {"priority": "P0", "topic": "reservation_honesty", "acceptance": "Sem slot ficticio chamado livre, codigo aleatorio chamado reserva, email/WhatsApp chamado enviado ou ICS STATUS:CONFIRMED sem integracao verificavel."},
+    {"priority": "P0", "topic": "contact_facts", "acceptance": "Telefone, WhatsApp, endereco, registro e dominio somente de fonte confirmada; ate la, nao direcionar para numero ficticio."},
+    {"priority": "P0", "topic": "single_catalog", "acceptance": "8 precos consistentes em vitrine, modal, triagem, comprovante, calendario e IA, derivados de id + modalidade; assinaturas com sufixo mensal."},
+    {"priority": "P1", "topic": "content_visual_authority", "acceptance": "Indicadores profissionais aprovados, imagem 770 retirada da oferta 120, alegacoes de validacao atenuadas, marcas/portal legados removidos."},
+    {"priority": "P1", "topic": "public_assets_and_privacy", "acceptance": "PDF integral, superprompt, matriz, hashes e fontes de trabalho fora de public; telemetria sem texto livre de saude."},
+    {"priority": "P2", "topic": "accessibility_runtime", "acceptance": "Teclado, foco/restauracao, Escape, reducao de movimento, 360/390/768/1440px e zoom 200% comprovados em preview."}
+  ],
+  "do_not_invent": ["telefone", "endereco_de_consultorio", "registro_profissional", "agenda_real", "envio_email", "envio_whatsapp", "integracao_webidiet", "documento_autenticado", "nota_google_verificada", "resultado_clinico"],
+  "validation_limitations": {
+    "no_browser_or_public_deploy_test": true,
+    "local_build_not_run_due_to_missing_node_modules": true,
+    "local_lint_not_run_due_to_missing_typescript": true,
+    "relative_imports_broken": 0,
+    "eight_plan_prices_match": true,
+    "three_addons_total_brl": 869,
+    "source_only_not_production_attestation": true
+  }
+}
