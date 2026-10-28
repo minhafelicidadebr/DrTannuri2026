@@ -126,7 +126,7 @@ export const COMMERCIAL_OFFERS: CommercialOffer[] = [
   },
   {
     id: 'programa_longevidade_vip',
-    name: 'Performance & Longevidade Integrada',
+    name: 'Programa 6 Meses: Performance & Longevidade',
     category: 'premium',
     allowedModalities: ['online', 'presencial'],
     pricesCents: {
@@ -139,16 +139,17 @@ export const COMMERCIAL_OFFERS: CommercialOffer[] = [
     followUpCadenceDays: 15,
     bioimpedancePresencialIncluded: true,
     externalAppLabel: 'App Webidiet',
-    description: 'A experiência de nutrição esportiva e longevidade com monitoramento estreito e integração de rotina.',
+    description: 'Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas e 6 retornos de ajuste fino para máxima performance e longevidade.',
     features: [
-      'Consulta clínica aprofundada de 60 minutos',
-      '6 retornos quinzenais dedicados à alta performance',
+      'Programa completo de 6 meses (24 semanas)',
+      '6 consultas clínicas aprofundadas individuais de 60 minutos',
+      '6 retornos dedicados à alta performance e evolução',
       'Bioimpedância presencial quinzenal InBody 120 (modalidade presencial)',
       'Estratégias alimentares para viagens de negócios e compromissos',
       'Análise minuciosa de biomarcadores celulares e exames',
       'Atendimento prioritário com suporte contínuo'
     ],
-    ctaLabel: 'Solicitar Experiência VIP'
+    ctaLabel: 'Quero o Programa de 6 Meses'
   }
 ];
 

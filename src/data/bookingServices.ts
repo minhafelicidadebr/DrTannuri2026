@@ -5,7 +5,9 @@ export const BOOKING_SERVICES: BookingServiceItem[] = [
   // 1. Planos Canônicos Reconciliados (Derivados diretamente de COMMERCIAL_OFFERS)
   ...COMMERCIAL_OFFERS.map((offer) => {
     const isMonthly = offer.billingPeriod === 'month';
-    const durationLabel = offer.followUpCount !== null
+    const durationLabel = offer.id === 'programa_longevidade_vip'
+      ? '6 meses (24 semanas) • 6 consultas + 6 retornos'
+      : offer.followUpCount !== null
       ? `${offer.appointmentDurationMinutes} min (+${offer.followUpCount} retornos)`
       : `${offer.appointmentDurationMinutes} min (+retornos quinzenais)`;
 

@@ -89,9 +89,9 @@ export const AUDITED_KNOWLEDGE_MATRIX: AuditedTopic[] = [
   - Online: **R$ 259/mês** | Presencial DF: **R$ 429/mês**
   - Consulta de alinhamento de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120). Sem carência.
 
-• **Performance & Longevidade Integrada (VIP)**:
+• **Programa 6 Meses: Performance & Longevidade (VIP)**:
   - Online: **R$ 1.999** | Presencial DF: **R$ 3.199**
-  - Consulta de 60 min + 6 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.
+  - Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas de 60 min + 6 retornos dedicados, bioimpedância presencial quinzenal (InBody 120), estratégias para viagens de negócios e suporte prioritário.
 
 **Add-on Avulso:**
 • **Bioimpedância InBody 120**: **R$ 99** (Presencial • 20 min).

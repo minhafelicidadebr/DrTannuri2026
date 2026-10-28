@@ -131,7 +131,7 @@ export const CARE_OFFERS: CareOffer[] = [
   },
   {
     id: "programa_longevidade_vip",
-    name: "Performance & Longevidade Integrada",
+    name: "Programa 6 Meses: Performance & Longevidade",
     category: "premium",
     priceCentsByModality: {
       online: 199900,    // R$ 1.999
@@ -142,23 +142,24 @@ export const CARE_OFFERS: CareOffer[] = [
     returns: {
       quantity: 6,
       intervalDays: 15,
-      description: "6 retornos quinzenais dedicados à alta performance"
+      description: "6 consultas clínicas (60 min) + 6 retornos quinzenais dedicados"
     },
     inPersonBioimpedance: {
       device: "InBody 120",
       intervalDays: 15,
       description: "Bioimpedância presencial quinzenal (InBody 120)"
     },
-    description: "A experiência máxima de nutrição funcional e esportiva com monitoramento estreito e integração de rotina.",
+    description: "Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas e 6 retornos de ajuste fino para máxima performance e longevidade.",
     features: [
-      "Consulta clínica aprofundada de 60 minutos",
-      "6 retornos quinzenais dedicados à alta performance",
+      "Programa completo de 6 meses (24 semanas)",
+      "6 consultas clínicas aprofundadas de 60 minutos",
+      "6 retornos dedicados à alta performance e evolução",
       "Bioimpedância presencial quinzenal (InBody 120)",
       "Consultoria de estratégias alimentares para viagens de negócios",
       "Análise minuciosa de biomarcadores e exames laboratoriais",
       "Atendimento prioritário com suporte contínuo"
     ],
-    ctaLabel: "Quero a Experiência Completa",
+    ctaLabel: "Quero o Programa de 6 Meses",
     isPopular: false,
     disclaimer: "Recomendado para atletas amadores, competidores, executivos e alta demanda física/cognitiva."
   }
@@ -192,69 +193,17 @@ export const CANONICAL_PLANS: PlanItem[] = CARE_OFFERS.map(offer => ({
 
 export const CANONICAL_ADDONS: AddonItem[] = [
   {
-    id: "bioimpedancia_inbody",
-    name: "Exame de Bioimpedância Segmentada InBody 120",
-    category: "Diagnóstico",
-    price: "R$ 99",
-    numericPrice: 99,
-    description: "Avaliação física com laudo no equipamento InBody 120: medição de massa de músculo esquelético, gordura corporal, água corporal total e estimativa da Taxa Metabólica Basal.",
-    benefit: "Permite quantificar sua evolução física e acompanhar o ganho de massa magra e redução de gordura.",
-    imageKey: "addonInBody",
-    badge: "Precisão InBody 120",
-    durationOrFormat: "Presencial • 20 min",
-    suitableFor: "Recomposição corporal, controle de percentual de gordura e acompanhamento de treinos.",
-    clinicalSpecs: [
-      "Massa de Músculo Esquelético e Gordura Corporal",
-      "Porcentagem de Gordura Corporal (PBF)",
-      "Água Corporal Total",
-      "Estimativa de Taxa Metabólica Basal (TMB)",
-      "Controle de Massa Muscular e Gordura"
-    ],
-    preparationTips: [
-      "Jejum alimentar de 2 a 3 horas antes do exame",
-      "Evitar exercícios físicos extenuantes nas 12h anteriores",
-      "Esvaziar a bexiga cerca de 15 minutos antes da medição",
-      "Não ingerir bebidas alcoólicas nas 24h que antecedem"
-    ]
-  },
-  {
-    id: "sensor_glicose",
-    name: "Sensor Contínuo de Glicose + Análise de Dados (14 dias)",
-    category: "Biotecnologia",
-    price: "R$ 490",
-    numericPrice: 490,
-    description: "Instalação do sensor intersticial e relatório de tolerância glicêmica personalizada para diferentes refeições.",
-    benefit: "Descubra como seu corpo específico reage a aveia, frutas, massas e treinos.",
-    imageKey: "addonCgmSensor",
-    badge: "Telemetria 24/7",
-    durationOrFormat: "Sensor 14 dias + Relatório Clínico",
-    suitableFor: "Pico de insulina subclínico, fadiga pós-prandial, atletas que buscam timing de carboidratos e pré-diabetes.",
-    clinicalSpecs: [
-      "Monitoramento intersticial ininterrupto por 14 dias",
-      "Curva de resposta glicêmica para cada refeição típica",
-      "Identificação de quedas reativas (hipoglicemia e fadiga)",
-      "Correlação com picos de sono, estresse e exercício",
-      "Relatório comparativo de tolerância a carboidratos reais"
-    ],
-    preparationTips: [
-      "Aplicação indolor e rápida na parte posterior do braço",
-      "Resistente à água (banho, natação e treinos intensos)",
-      "Sincronização direta via smartphone (iOS/Android)",
-      "Diário fotográfico das refeições durante o período"
-    ]
-  },
-  {
     id: "consultoria_cozinha",
-    name: "Consultoria de Cozinha & Meal Prep Prático (Online)",
-    category: "Rotina",
+    name: "Consultoria de Cozinha & Meal Prep Prático",
+    category: "Rotina & Autonomia",
     price: "R$ 280",
     numericPrice: 280,
-    description: "Sessão prática de 60 minutos para organizar despensa, congelamento correto e montagem de marmitas funcionais em 2h por semana.",
-    benefit: "Elimina a desculpa da falta de tempo e barateia o supermercado.",
+    description: "Sessão prática individual de 60 minutos para organizar despensa, planejar compras e dominar o preparo e congelamento de marmitas funcionais em 2h por semana.",
+    benefit: "Elimina a desculpa da falta de tempo, acaba com o desperdício de alimentos e reduz substancialmente os gastos com delivery.",
     imageKey: "addonMealPrep",
     badge: "Autonomia & Economia",
     durationOrFormat: "Online ao Vivo • 60 min",
-    suitableFor: "Profissionais com rotina corrida, pessoas que gastam muito com delivery ou buscam consistência na dieta.",
+    suitableFor: "Profissionais com rotina corrida, praticantes de atividade física, pessoas que gastam muito com delivery ou buscam consistência na dieta.",
     clinicalSpecs: [
       "Auditoria de despensa e utensílios indispensáveis",
       "Técnicas de pré-preparo e cozimento em lote (batch cooking)",

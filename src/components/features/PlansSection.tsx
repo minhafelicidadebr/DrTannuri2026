@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Check, Sparkles, ArrowRight, ShieldCheck, PlusCircle, ShoppingBag, X, MessageCircle, MapPin, Globe } from 'lucide-react';
+import { Check, Sparkles, ArrowRight, ShieldCheck, PlusCircle, ShoppingBag, X, MessageCircle, MapPin, Globe, UtensilsCrossed, Info } from 'lucide-react';
 import { CARE_OFFERS, CANONICAL_ADDONS, CLIENT_INFO, formatBRL } from '../../data/canonicalCatalog';
+import { VISUAL_ASSETS } from '../../data/imageAssets';
 import { CareOffer, AddonItem, Modality } from '../../types';
 import { analytics } from '../../lib/analytics';
 import { AddonCard } from './addons/AddonCard';
@@ -233,58 +234,157 @@ export const PlansSection: React.FC<PlansSectionProps> = ({ onSelectPlan, onOpen
           })}
         </div>
 
-        {/* Add-ons Section - Exames & Serviços Complementares */}
-        <div id="add-ons-precisao" className="rounded-3xl bg-gradient-to-br from-white via-[#F8FAF5] to-[#EEF5E9] border border-[#CCD8C4] p-6 sm:p-8 md:p-10 shadow-[0_16px_50px_rgba(20,40,25,0.08)]">
+        {/* SERVIÇO COMPLEMENTAR: CONSULTORIA DE COZINHA & MEAL PREP (Layout Adaptado para 1 Card) */}
+        <div id="add-ons-precisao" className="rounded-3xl bg-gradient-to-br from-white via-[#FAFDF8] to-[#EEF5E9] border border-[#CCD8C4] p-6 sm:p-8 md:p-10 shadow-[0_16px_50px_rgba(20,40,25,0.08)]">
           {/* Section Sub-Header */}
           <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-[#CCD8C4]">
             <div className="max-w-2xl">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1B4D24]/10 text-[#1B4D24] text-xs font-mono-data font-bold uppercase tracking-wider mb-2">
-                <Sparkles className="w-3.5 h-3.5 text-[#1B4D24]" />
-                <span>Exames & Serviços Complementares</span>
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#2C6E14]/10 text-[#2C6E14] text-xs font-mono-data font-bold uppercase tracking-wider mb-2">
+                <UtensilsCrossed className="w-3.5 h-3.5 text-[#2C6E14]" />
+                <span>Serviço Complementar de Autonomia</span>
               </div>
               <h3 className="font-display text-2xl sm:text-3xl font-bold text-[#0A160F] tracking-tight">
-                Add-ons de Precisão
+                Consultoria de Cozinha & Meal Prep Prático
               </h3>
               <p className="text-xs sm:text-sm text-[#566D5D] mt-1.5 leading-relaxed">
-                Tecnologia diagnóstica, telemetria contínua e autonomia prática de cozinha. Opcionais disponíveis para qualquer paciente, com ou sem plano associado.
+                Aprenda a dominar o pré-preparo, congelamento e montagem de marmitas funcionais para a semana inteira em até 2 horas. Disponível de forma avulsa ou como complemento a qualquer plano.
               </p>
             </div>
-
-            {selectedAddonIds.length > 0 && (
-              <div className="flex items-center gap-3 bg-[#EAF5E4] border border-[#72B818] px-4 py-2.5 rounded-2xl shadow-xs">
-                <div className="text-right">
-                  <span className="block text-[10px] font-mono-data text-[#566D5D] uppercase font-bold">
-                    {selectedAddonIds.length} item(ns) selecionado(s)
-                  </span>
-                  <span className="text-sm font-bold text-[#2C6E14]">
-                    Total: R$ {addonsTotalPrice}
-                  </span>
-                </div>
-                <button
-                  type="button"
-                  onClick={handleBookBundle}
-                  className="px-4 py-2 rounded-xl bg-[#2C6E14] text-white text-xs font-bold hover:bg-[#1E4D0E] transition-all flex items-center gap-1.5 shadow-sm cursor-pointer"
-                >
-                  <MessageCircle className="w-3.5 h-3.5" />
-                  <span>Agendar Add-ons</span>
-                </button>
-              </div>
-            )}
           </div>
 
-          {/* Add-ons 3 Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {CANONICAL_ADDONS.map((addon) => (
-              <AddonCard
+          {/* Masterclass Single Card Feature (Split Horizontal Layout) */}
+          {CANONICAL_ADDONS.map((addon) => {
+            const visualAsset = addon.imageKey && VISUAL_ASSETS[addon.imageKey] ? VISUAL_ASSETS[addon.imageKey] : null;
+
+            return (
+              <div
                 key={addon.id}
-                addon={addon}
-                isSelected={selectedAddonIds.includes(addon.id)}
-                onToggleSelect={handleToggleAddon}
-                onViewDetails={(a) => setActiveModalAddon(a)}
-              />
-            ))}
-          </div>
+                className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 bg-white rounded-3xl border border-[#CCD8C4] p-5 sm:p-7 shadow-[0_8px_30px_rgba(20,40,25,0.06)] hover:border-[#72B818] transition-all"
+              >
+                {/* Coluna Esquerda: Imagem com Badge e Preço */}
+                <div 
+                  className="lg:col-span-5 relative aspect-[16/10] sm:aspect-[4/3] lg:aspect-auto min-h-[260px] rounded-2xl overflow-hidden bg-[#0A160F] group cursor-pointer"
+                  onClick={() => setActiveModalAddon(addon)}
+                >
+                  {visualAsset && (
+                    <img
+                      src={visualAsset.src}
+                      alt={addon.name}
+                      referrerPolicy="no-referrer"
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-out"
+                    />
+                  )}
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#0A160F]/95 via-[#0A160F]/30 to-transparent pointer-events-none" />
 
+                  {/* Badges superiores na foto */}
+                  <div className="absolute top-3.5 left-3.5 flex items-center gap-2 z-10">
+                    <span className="px-3 py-1 rounded-full text-[11px] font-mono-data font-bold uppercase tracking-wider bg-white/95 text-[#2C6E14] border border-[#CCD8C4] shadow-xs flex items-center gap-1.5">
+                      <UtensilsCrossed className="w-3.5 h-3.5 text-[#2C6E14]" />
+                      <span>{addon.category}</span>
+                    </span>
+                  </div>
+
+                  <div className="absolute top-3.5 right-3.5 z-10">
+                    <span className="px-2.5 py-1 rounded-full text-[10px] font-mono-data font-bold uppercase bg-[#0A160F]/85 text-[#AEE938] border border-white/20 shadow-xs">
+                      {addon.badge}
+                    </span>
+                  </div>
+
+                  {/* Banner de preço e formato na foto */}
+                  <div className="absolute bottom-3.5 left-3.5 right-3.5 flex items-end justify-between z-10 pointer-events-none">
+                    <div>
+                      <span className="text-[10px] font-mono-data uppercase text-white/75 block font-bold tracking-wider">Investimento</span>
+                      <div className="text-2xl sm:text-3xl font-black font-display text-white drop-shadow-sm leading-none mt-0.5">
+                        {addon.price}
+                      </div>
+                    </div>
+                    {addon.durationOrFormat && (
+                      <span className="text-[11px] font-mono-data text-white font-semibold bg-white/20 backdrop-blur-md px-2.5 py-1 rounded-lg border border-white/25">
+                        {addon.durationOrFormat}
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {/* Coluna Direita: Informações Detalhadas & Ações */}
+                <div className="lg:col-span-7 flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="text-[11px] font-mono-data uppercase tracking-wider text-[#C84A07] font-bold">
+                        Sessão Prática Individual com Dr. Luiz Tannuri
+                      </span>
+                    </div>
+
+                    <h4 className="font-display text-xl sm:text-2xl font-bold text-[#0A160F] mb-2 leading-snug">
+                      {addon.name}
+                    </h4>
+
+                    <p className="text-xs sm:text-sm text-[#566D5D] leading-relaxed mb-4">
+                      {addon.description}
+                    </p>
+
+                    {/* Caixa de Benefício Clínico & Prático */}
+                    <div className="p-4 rounded-2xl bg-gradient-to-r from-[#F6FAF2] via-[#FAFDF7] to-[#FFF6ED] border border-[#CCD8C4] mb-5 text-xs text-[#2C4032]">
+                      <div className="flex items-start gap-2">
+                        <Sparkles className="w-4 h-4 text-[#EB651A] shrink-0 mt-0.5" />
+                        <div className="leading-relaxed">
+                          <strong className="text-[#C84A07] font-bold">Benefício Clínico & Prático: </strong>
+                          <span>{addon.benefit}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Grid de 4 Especificações do Serviço */}
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 mb-6 text-xs text-[#384C3E]">
+                      {addon.clinicalSpecs?.slice(0, 4).map((spec, i) => (
+                        <div key={i} className="flex items-start gap-2">
+                          <Check className="w-3.5 h-3.5 text-[#2C6E14] shrink-0 mt-0.5" />
+                          <span className="font-medium text-[#0A160F]">{spec}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Ações Inferiores */}
+                  <div className="pt-4 border-t border-[#CCD8C4] flex flex-wrap items-center justify-between gap-3">
+                    <div className="flex items-center gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setActiveModalAddon(addon)}
+                        className="font-bold text-[#2C6E14] hover:text-[#0A160F] text-xs flex items-center gap-1.5 cursor-pointer transition-colors"
+                      >
+                        <Info className="w-3.5 h-3.5" />
+                        <span>Ver roteiro completo</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => onOpenConcierge(`Gostaria de saber mais sobre a Consultoria de Cozinha & Meal Prep (${addon.price}). Como ela funciona na prática?`)}
+                        className="text-[#566D5D] hover:text-[#2C6E14] text-xs flex items-center gap-1.5 cursor-pointer font-semibold transition-colors"
+                      >
+                        <MessageCircle className="w-3.5 h-3.5 text-[#EB651A]" />
+                        <span>Dúvidas com Clara IA</span>
+                      </button>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const text = encodeURIComponent(
+                          `Olá, Dr. Tannuri! Gostaria de agendar a Consultoria de Cozinha & Meal Prep Prático (${addon.price}). Como podemos marcar o horário?`
+                        );
+                        window.open(`https://wa.me/${CLIENT_INFO.whatsAppClean}?text=${text}`, '_blank');
+                      }}
+                      className="w-full sm:w-auto px-5 py-3 rounded-xl bg-[#2C6E14] hover:bg-[#1E4D0E] text-white text-xs sm:text-sm font-bold transition-all flex items-center justify-center gap-2 shadow-sm cursor-pointer hover:scale-[1.02] active:scale-98"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      <span>Agendar Consultoria de Cozinha ({addon.price})</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
       </div>
@@ -293,13 +393,12 @@ export const PlansSection: React.FC<PlansSectionProps> = ({ onSelectPlan, onOpen
       {activeModalAddon && (
         <AddonDetailModal
           addon={activeModalAddon}
+          isOpen={Boolean(activeModalAddon)}
           onClose={() => setActiveModalAddon(null)}
-          onAdd={() => {
-            if (!selectedAddonIds.includes(activeModalAddon.id)) {
-              handleToggleAddon(activeModalAddon.id);
-            }
-            setActiveModalAddon(null);
-          }}
+          onOpenConcierge={onOpenConcierge}
+          onToggleSelect={handleToggleAddon}
+          isSelected={selectedAddonIds.includes(activeModalAddon.id)}
+          onOpenBooking={onOpenBooking}
         />
       )}
 

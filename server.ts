@@ -64,9 +64,9 @@ Seu tom de voz: empático, científico, resolutivo, acolhedor e orientado à tra
 3. Assinatura Acompanhamento Contínuo (Mensal):
    - Online: R$ 259/mês | Presencial em Brasília: R$ 429/mês
    - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120). Sem carência.
-4. Performance & Longevidade Integrada (VIP):
+4. Programa 6 Meses: Performance & Longevidade (VIP):
    - Online: R$ 1.999 | Presencial em Brasília: R$ 3.199
-   - Consulta de 60 min + 6 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.
+   - Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas de 60 min + 6 retornos dedicados, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.
 
 Add-on Avulso:
 - Exame de Bioimpedância Segmentada InBody 120: R$ 99 (Presencial em Brasília • 20 min).
@@ -105,7 +105,7 @@ function getDeterministicFallback(userMessage: string, context?: any): string {
 
   // 3. TAG: Valores e Investimento nos Planos
   if (query.includes("preço") || query.includes("valor") || query.includes("quanto custa") || query.includes("plano") || query.includes("investimento") || query.includes("valores")) {
-    return "O Dr. Luiz Tannuri atende com **transparência total**. Os planos são estruturados para atender você tanto por **Teleconsulta Online** quanto **Presencialmente em Brasília (DF)**:\n\n• **Diagnóstico Inicial de Precisão (60 min)**:\n  - Online: **R$ 450** | Presencial DF: **R$ 750**\n  - Inclui 1 retorno em até 15 dias.\n\n• **Programa Metabolismo 12 Semanas**:\n  - Online: **R$ 1.199** | Presencial DF: **R$ 1.999**\n  - Consulta inicial de 60 min + 3 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e App Webidiet.\n\n• **Assinatura Acompanhamento Contínuo (Mensal)**:\n  - Online: **R$ 259/mês** | Presencial DF: **R$ 429/mês**\n  - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120).\n\n• **Performance & Longevidade Integrada (VIP)**:\n  - Online: **R$ 1.999** | Presencial DF: **R$ 3.199**\n  - Consulta de 60 min + 6 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.\n\n**Add-on Avulso:**\n• **Bioimpedância InBody 120**: **R$ 99** (Presencial • 20 min).\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nQual dessas opções reflete melhor o que você busca hoje?";
+    return "O Dr. Luiz Tannuri atende com **transparência total**. Os planos são estruturados para atender você tanto por **Teleconsulta Online** quanto **Presencialmente em Brasília (DF)**:\n\n• **Diagnóstico Inicial de Precisão (60 min)**:\n  - Online: **R$ 450** | Presencial DF: **R$ 750**\n  - Inclui 1 retorno em até 15 dias.\n\n• **Programa Metabolismo 12 Semanas**:\n  - Online: **R$ 1.199** | Presencial DF: **R$ 1.999**\n  - Consulta inicial de 60 min + 3 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e App Webidiet.\n\n• **Assinatura Acompanhamento Contínuo (Mensal)**:\n  - Online: **R$ 259/mês** | Presencial DF: **R$ 429/mês**\n  - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120).\n\n• **Programa 6 Meses: Performance & Longevidade (VIP)**:\n  - Online: **R$ 1.999** | Presencial DF: **R$ 3.199**\n  - Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas de 60 min + 6 retornos dedicados, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.\n\n**Add-on Avulso:**\n• **Bioimpedância InBody 120**: **R$ 99** (Presencial • 20 min).\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nQual dessas opções reflete melhor o que você busca hoje?";
   }
 
   // 4. TAG: Composição Corporal e InBody 120

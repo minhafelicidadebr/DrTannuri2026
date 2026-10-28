@@ -122,10 +122,10 @@ export const ProfessionalStory: React.FC<ProfessionalStoryProps> = ({
                   height={1152}
                 />
 
-                {/* Badge Flutuante: Faixa Preta 6º Grau */}
-                <div className="absolute top-4 left-4 flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#0A160F]/85 backdrop-blur-md text-white border border-[#72B818]/50 text-xs font-bold shadow-md">
+                {/* Badge Flutuante: Dupla Faixa Preta */}
+                <div className="absolute top-4 left-4 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0A160F]/90 backdrop-blur-md text-white border border-[#72B818]/60 text-xs font-bold shadow-lg">
                   <span className="w-2 h-2 rounded-full bg-[#72B818] animate-pulse" />
-                  <span>Faixa Preta 6º Grau · Jiu-Jitsu</span>
+                  <span>Jiu-Jitsu 6º Grau & Judô Faixa Preta</span>
                 </div>
 
                 {/* Badge Flutuante: Nutrição Esportiva */}
@@ -181,52 +181,106 @@ export const ProfessionalStory: React.FC<ProfessionalStoryProps> = ({
             {/* Subtítulo & Parágrafos Principais com Neuromarketing Ético */}
             <div className="space-y-4 text-base sm:text-lg text-[#384C3E] leading-relaxed mb-8">
               <p>
-                Como <strong className="text-[#0A160F] font-semibold">nutricionista pós-graduado</strong> e <strong className="text-[#0A160F] font-semibold">mestre de jiu-jitsu faixa preta 6º grau</strong>, Luiz Tannuri conhece de maneira profunda o que acontece dentro e fora do treino. Essa vivência prática dá contexto imediato à conversa; a avaliação bioquímica orienta o atendimento com exatidão.
+                Como <strong className="text-[#0A160F] font-semibold">nutricionista pós-graduado</strong>, <strong className="text-[#0A160F] font-semibold">mestre de jiu-jitsu faixa preta 6º grau</strong> e <strong className="text-[#0A160F] font-semibold">faixa preta de judô</strong>, Luiz Tannuri conhece de maneira profunda o que acontece dentro e fora do treino. Essa vivência prática dá contexto imediato à conversa; a avaliação bioquímica orienta o atendimento com exatidão.
               </p>
               <p className="text-[#0A160F] font-medium text-base sm:text-lg">
                 Conhecimento técnico de alto nível, escuta acolhedora e explicações didáticas para você assumir o controle definitivo do seu rendimento e da sua saúde.
               </p>
             </div>
 
-            {/* Fatos Institucionais em Destaque Rápido */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mb-8">
-              <div className="p-4 rounded-2xl bg-white border border-[#CCD8C4] flex items-start gap-3 shadow-xs">
-                <div className="w-8 h-8 rounded-xl bg-[#F0F9EC] flex items-center justify-center text-[#2C6E14] shrink-0 mt-0.5">
-                  <GraduationCap className="w-4 h-4" />
+            {/* DESTAQUE PRINCIPAL: MESTRADO MARCIAL & DUPLA FAIXA PRETA (ToT Optimized) */}
+            <div className="rounded-3xl bg-gradient-to-br from-[#0A160F] via-[#102417] to-[#0A160F] border border-[#72B818]/40 p-5 sm:p-7 shadow-[0_16px_40px_rgba(10,22,15,0.18)] mb-8 text-white relative overflow-hidden">
+              {/* Glow decorativo sutil */}
+              <div className="absolute top-0 right-0 w-64 h-64 bg-[#72B818]/10 rounded-full blur-3xl pointer-events-none" />
+
+              <div className="flex flex-wrap items-center justify-between gap-3 mb-5 border-b border-white/10 pb-4">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-[#AEE938] text-xs font-mono-data font-bold uppercase tracking-wider">
+                  <span className="w-2 h-2 rounded-full bg-[#AEE938] animate-pulse" />
+                  <span>Autoridade de Tatame & Mestrado Marcial</span>
                 </div>
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-[#0A160F]">Pós-Graduado em Nutrição Esportiva</h3>
-                  <p className="text-xs text-[#566D5D] mt-0.5">Mais de 10 anos de experiência clínica embasada em evidências.</p>
+                <span className="text-[11px] font-mono-data text-white/70">
+                  30+ Anos de Prática Contínua
+                </span>
+              </div>
+
+              <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 tracking-tight">
+                Mestre Faixa Preta 6º Grau de Jiu-Jitsu & Faixa Preta de Judô
+              </h3>
+
+              <p className="text-xs sm:text-sm text-[#CCD8C4] leading-relaxed mb-6">
+                A união inseparável da tradição marcial com a nutrição esportiva de elite: vivência visceral de corte de peso, desidratação segura, recuperação celular e potência competitiva.
+              </p>
+
+              {/* Grid das Duas Artes Marciais */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {/* 1. Jiu-Jitsu 6º Grau */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="text-xs font-mono-data font-bold uppercase tracking-wider text-[#AEE938]">
+                        Jiu-Jitsu Brasileiro
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-[#72B818]/20 text-[#AEE938] font-bold">
+                        6º Grau (2023)
+                      </span>
+                    </div>
+                    <h4 className="font-display font-bold text-base text-white mb-1.5">
+                      Mestre Faixa Preta 6º Grau
+                    </h4>
+                    <p className="text-xs text-white/80 leading-relaxed mb-3">
+                      Certificado conferido em 2023 pela Fabricio International Team (chancelado por Mestres 8º e 7º Grau) e registro histórico na CBJJ (nº 157721) / IBJJF. Mais de 30 anos de liderança nos tatames.
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDiploma(2)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#AEE938] hover:text-white transition-colors cursor-pointer self-start"
+                  >
+                    <span>Visualizar Certificado 6º Grau</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* 2. Judô Faixa Preta */}
+                <div className="p-4 rounded-2xl bg-white/5 border border-white/10 backdrop-blur-xs flex flex-col justify-between">
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="text-xs font-mono-data font-bold uppercase tracking-wider text-[#EB651A]">
+                        Judô Tradicional
+                      </span>
+                      <span className="text-[10px] px-2 py-0.5 rounded-md bg-[#EB651A]/20 text-[#FFA066] font-bold">
+                        Desde 2007
+                      </span>
+                    </div>
+                    <h4 className="font-display font-bold text-base text-white mb-1.5">
+                      Professor Faixa Preta de Judô
+                    </h4>
+                    <p className="text-xs text-white/80 leading-relaxed mb-3">
+                      Diplomado em Judô há quase duas décadas (desde 2007). Rigor de alavancas biomecânicas, controle de potência muscular e vivência como atleta campeão e em Artes Marciais Mistas (MMA).
+                    </p>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => handleOpenDiploma(3)}
+                    className="inline-flex items-center gap-1.5 text-xs font-bold text-[#FFA066] hover:text-white transition-colors cursor-pointer self-start"
+                  >
+                    <span>Visualizar Registro de Graduação</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
 
-              <div className="p-4 rounded-2xl bg-white border border-[#CCD8C4] flex items-start gap-3 shadow-xs">
-                <div className="w-8 h-8 rounded-xl bg-[#FFF4ED] flex items-center justify-center text-[#EB651A] shrink-0 mt-0.5">
-                  <Medal className="w-4 h-4" />
+              {/* Rodapé do Box: A Ponte Clínica & Alcance Internacional */}
+              <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-white/80">
+                <div className="flex items-center gap-2">
+                  <Globe2 className="w-4 h-4 text-[#72B818] shrink-0" />
+                  <span>Treinador Internacional: Academias no Brasil, Austrália, EUA e Suécia.</span>
                 </div>
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-[#0A160F]">Mestre Faixa Preta 6º Grau</h3>
-                  <p className="text-xs text-[#566D5D] mt-0.5">Mais de 30 anos de prática contínua e vivência esportiva no tatame.</p>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-white border border-[#CCD8C4] flex items-start gap-3 shadow-xs">
-                <div className="w-8 h-8 rounded-xl bg-[#F0F9EC] flex items-center justify-center text-[#2C6E14] shrink-0 mt-0.5">
-                  <Globe2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-[#0A160F]">Treinador Internacional</h3>
-                  <p className="text-xs text-[#566D5D] mt-0.5">Responsável por academias no Brasil, Austrália, EUA e Suécia.</p>
-                </div>
-              </div>
-
-              <div className="p-4 rounded-2xl bg-white border border-[#CCD8C4] flex items-start gap-3 shadow-xs">
-                <div className="w-8 h-8 rounded-xl bg-[#FFF4ED] flex items-center justify-center text-[#EB651A] shrink-0 mt-0.5">
-                  <Trophy className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-xs sm:text-sm font-bold text-[#0A160F]">Atleta Campeão Multidisciplinar</h3>
-                  <p className="text-xs text-[#566D5D] mt-0.5">Campeão no Jiu-Jitsu, Judô (Faixa Preta desde 2007) e MMA.</p>
+                <div className="flex items-center gap-2">
+                  <GraduationCap className="w-4 h-4 text-[#EB651A] shrink-0" />
+                  <span>Pós-Graduado em Nutrição Esportiva há 10+ anos.</span>
                 </div>
               </div>
             </div>
