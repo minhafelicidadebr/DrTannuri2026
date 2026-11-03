@@ -4,6 +4,7 @@ import { BookingAppointment } from '../../../types/booking';
 import { downloadAppointmentICS, getGoogleCalendarUrl } from '../../../utils/calendarIcs';
 import { CLIENT_INFO } from '../../../data/canonicalCatalog';
 import { VISUAL_ASSETS } from '../../../data/imageAssets';
+import { getServiceDisplayPrice } from '../../../data/bookingServices';
 
 interface BookingStepConfirmationProps {
   appointment: BookingAppointment;
@@ -31,6 +32,8 @@ export const BookingStepConfirmation: React.FC<BookingStepConfirmationProps> = (
     setTimeout(() => setCopiedCode(false), 2000);
   };
 
+  const currentModalityPrice = getServiceDisplayPrice(appointment.service, appointment.modality);
+
   const handleCopySummary = () => {
     const summaryText = [
       `Solicitação de Horário — Dr. Luiz Tannuri`,
@@ -41,7 +44,7 @@ export const BookingStepConfirmation: React.FC<BookingStepConfirmationProps> = (
       `Serviço: ${appointment.service.name}`,
       `Modalidade: ${appointment.modality === 'presencial' ? `Presencial em ${CLIENT_INFO.cityRegion}` : 'Telemedicina Online HD'}`,
       `Data Pretendida: ${appointment.date.toLocaleDateString('pt-BR')} (${appointment.slot.time})`,
-      `Investimento: ${appointment.service.price}`,
+      `Investimento: ${currentModalityPrice} (${appointment.modality === 'online' ? 'Online' : 'Presencial DF'})`,
       `Objetivo: ${appointment.patient.primaryGoal}`,
       appointment.patient.medicalNotes ? `Observações: ${appointment.patient.medicalNotes}` : '',
       `Status: Solicitação pendente de validação pela recepção.`
@@ -109,9 +112,11 @@ export const BookingStepConfirmation: React.FC<BookingStepConfirmationProps> = (
               <span>{copiedSummary ? 'Resumo Copiado!' : 'Copiar Resumo'}</span>
             </button>
             <div className="text-right pl-3 border-l border-[#CCD8C4]">
-              <span className="text-[10px] font-mono-data uppercase text-[#566D5D] block">Investimento</span>
+              <span className="text-[10px] font-mono-data uppercase text-[#566D5D] block">
+                Investimento ({appointment.modality === 'online' ? 'Online' : 'Presencial DF'})
+              </span>
               <span className="font-mono-data font-black text-lg text-[#0A160F]">
-                {appointment.service.price}
+                {currentModalityPrice}
               </span>
             </div>
           </div>
@@ -228,16 +233,16 @@ export const BookingStepConfirmation: React.FC<BookingStepConfirmationProps> = (
           type="button"
           onClick={() => {
             onClose();
-            onOpenConcierge(`Olá, Clara! Registrei uma solicitação de horário para a consulta ${appointment.service.name}. Gostaria de entender mais detalhes sobre a conduta.`);
+            onOpenConcierge(`Olá, Dr. Tannuri! Registrei uma solicitação de horário para a consulta ${appointment.service.name}. Gostaria de entender mais detalhes sobre a conduta.`);
           }}
           className="min-h-[44px] w-full sm:w-auto px-4 py-2.5 rounded-xl border border-[#CCD8C4] hover:border-[#1B4D24] text-xs font-bold text-[#1B4D24] bg-white flex items-center justify-center gap-2 cursor-pointer transition-colors shadow-2xs"
         >
           <img 
-            src={VISUAL_ASSETS.conciergeAvatar.src} 
-            alt="Clara" 
-            className="w-5 h-5 rounded-full object-cover border border-[#CCD8C4]"
+            src="/tannuriacademy.jpg" 
+            alt="Dr. Luiz Tannuri" 
+            className="w-5 h-5 rounded-full object-cover object-[center_12%] border border-[#CCD8C4]"
           />
-          <span>Tirar Dúvidas com a Clara</span>
+          <span>Tirar Dúvidas com Dr. Tannuri</span>
         </button>
 
         <div className="flex items-center gap-2 w-full sm:w-auto">

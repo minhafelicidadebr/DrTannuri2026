@@ -40,8 +40,12 @@ class AnalyticsManager {
     this.notify();
 
     // Log in development for transparency
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`[Telemetry] ${eventName}:`, cleanMeta);
+    try {
+      if (typeof window !== 'undefined' && (import.meta as any).env?.DEV) {
+        console.log(`[Telemetry] ${eventName}:`, cleanMeta);
+      }
+    } catch {
+      // Ignore in non-vite or restricted environments
     }
   }
 

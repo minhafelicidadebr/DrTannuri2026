@@ -110,3 +110,17 @@ export function generateTimeSlotsForDate(date: Date): TimeSlot[] {
     { id: 'n2', time: '19:00 - 20:00', period: 'noite', label: '19:00 - Noite', available: true, isFastingRecommended: false }
   ];
 }
+
+/**
+ * Retorna o valor formatado do serviço de acordo com a modalidade selecionada (Online vs Presencial),
+ * estritamente alinhado aos valores e regras de cobrança exibidos na página principal.
+ */
+export function getServiceDisplayPrice(service: BookingServiceItem, modality: 'online' | 'presencial'): string {
+  const isMonthly = service.id === 'plano_assinatura';
+  const priceCents = service.priceCentsByModality?.[modality];
+  if (priceCents !== undefined && priceCents !== null && priceCents > 0) {
+    return `${formatBRL(priceCents)}${isMonthly ? '/mês' : ''}`;
+  }
+  return service.price;
+}
+

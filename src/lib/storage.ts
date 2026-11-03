@@ -1,28 +1,53 @@
 import { DiagnosticState } from '../types';
 
 const DIAGNOSTIC_KEY = 'drtanutri_diagnostic_state';
-const LAB_PREFS_KEY = 'drtanutri_lab_prefs';
 
-export function saveDiagnosticState(state: DiagnosticState): void {
-  if (typeof window === 'undefined') return;
+export function safeGetSession(key: string): string | null {
   try {
-    sessionStorage.setItem(DIAGNOSTIC_KEY, JSON.stringify(state));
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      return sessionStorage.getItem(key);
+    }
   } catch (e) {
-    console.warn('Unable to save to sessionStorage', e);
+    // Graceful fallback for iframes with blocked storage or incognito mode
+    console.warn('[Storage] sessionStorage blocked or unavailable:', key);
+  }
+  return null;
+}
+
+export function safeSetSession(key: string, value: string): void {
+  try {
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.setItem(key, value);
+    }
+  } catch (e) {
+    console.warn('[Storage] Unable to write to sessionStorage:', key);
   }
 }
 
-export function loadDiagnosticState(): DiagnosticState | null {
-  if (typeof window === 'undefined') return null;
+export function safeRemoveSession(key: string): void {
   try {
-    const raw = sessionStorage.getItem(DIAGNOSTIC_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      sessionStorage.removeItem(key);
+    }
   } catch (e) {
+    console.warn('[Storage] Unable to remove from sessionStorage:', key);
+  }
+}
+
+export function saveDiagnosticState(state: DiagnosticState): void {
+  safeSetSession(DIAGNOSTIC_KEY, JSON.stringify(state));
+}
+
+export function loadDiagnosticState(): DiagnosticState | null {
+  const raw = safeGetSession(DIAGNOSTIC_KEY);
+  if (!raw) return null;
+  try {
+    return JSON.parse(raw);
+  } catch {
     return null;
   }
 }
 
 export function clearDiagnosticState(): void {
-  if (typeof window === 'undefined') return;
-  sessionStorage.removeItem(DIAGNOSTIC_KEY);
+  safeRemoveSession(DIAGNOSTIC_KEY);
 }

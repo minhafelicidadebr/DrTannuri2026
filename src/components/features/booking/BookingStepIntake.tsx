@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowLeft, ArrowRight, User, Phone, Mail, Target, FileText, ShieldCheck, Check } from 'lucide-react';
 import { BookingFormData, BookingServiceItem, BookingModality, TimeSlot } from '../../../types/booking';
+import { getServiceDisplayPrice } from '../../../data/bookingServices';
 
 interface BookingStepIntakeProps {
   formData: BookingFormData;
@@ -67,8 +68,9 @@ export const BookingStepIntake: React.FC<BookingStepIntakeProps> = ({
           </p>
         </div>
 
-        <div className="font-mono-data font-black text-base text-[#1B4D24] bg-white px-3 py-1.5 rounded-xl border border-[#CCD8C4] shadow-2xs self-start sm:self-center">
-          {service.price}
+        <div className="font-mono-data font-black text-base text-[#1B4D24] bg-white px-3 py-1.5 rounded-xl border border-[#CCD8C4] shadow-2xs self-start sm:self-center flex items-center gap-1.5">
+          <span className="text-[10px] text-[#566D5D] uppercase font-bold">{modality === 'online' ? 'Online' : 'Presencial DF'}:</span>
+          <span>{getServiceDisplayPrice(service, modality)}</span>
         </div>
       </div>
 

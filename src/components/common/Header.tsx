@@ -14,7 +14,8 @@ import {
   Calendar,
   ChevronRight,
   Clock,
-  MapPin
+  MapPin,
+  Users
 } from 'lucide-react';
 import { CLIENT_INFO } from '../../data/canonicalCatalog';
 import { analytics } from '../../lib/analytics';
@@ -23,9 +24,10 @@ interface HeaderProps {
   onOpenConcierge?: (initialPrompt?: string) => void;
   onOpenTelemetry?: () => void;
   onOpenBooking?: (serviceId?: string) => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
+export const Header: React.FC<HeaderProps> = ({ onOpenBooking, onOpenAdmin }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -59,6 +61,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
 
   const scrollTo = (id: string) => {
     setMobileMenuOpen(false);
+    if (id === 'agenda' && onOpenBooking) {
+      analytics.track('booking_open_nav_agenda', 'navigation');
+      onOpenBooking();
+      return;
+    }
     const element = document.getElementById(id);
     if (element) {
       analytics.track('navigation_click', 'header', { targetId: id });
@@ -67,10 +74,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
   };
 
   const navItems = [
+    { label: 'Agenda Online', target: 'agenda', isHighlight: true, icon: Calendar },
     { label: 'Trajetória', target: 'trajetoria', icon: Layers },
     { label: 'Depoimentos', target: 'depoimentos', icon: ShieldCheck },
     { label: 'Método', target: 'metodo', icon: Activity },
-    { label: 'Planos', target: 'planos', isHighlight: true, icon: CreditCard },
+    { label: 'Planos', target: 'planos', icon: CreditCard },
     { label: 'Evidências', target: 'evidencias', icon: Target },
     { label: 'FAQ', target: 'faq', icon: FlaskConical },
   ];
@@ -153,12 +161,26 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
                   analytics.track('booking_open_header', 'navigation');
                   onOpenBooking();
                 }}
-                className="min-h-[40px] hidden md:flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-white/95 hover:bg-white border border-[#CCD8C4] hover:border-[#1B4D24] text-[#1B4D24] hover:shadow-[0_4px_14px_rgba(27,77,36,0.15)] transition-all text-xs font-bold cursor-pointer shadow-2xs active:scale-[0.98] group whitespace-nowrap"
+                className="min-h-[40px] hidden sm:flex items-center gap-2 px-3 sm:px-3.5 py-1.5 rounded-full bg-white/95 hover:bg-white border border-[#CCD8C4] hover:border-[#1B4D24] text-[#1B4D24] hover:shadow-[0_4px_14px_rgba(27,77,36,0.15)] transition-all text-xs font-bold cursor-pointer shadow-2xs active:scale-[0.98] group whitespace-nowrap"
                 title="Acessar Agenda Online e reservar horário"
               >
                 <Calendar className="w-3.5 h-3.5 text-[#1B4D24] group-hover:scale-110 transition-transform" />
-                <span>Ver Agenda Online</span>
+                <span className="hidden md:inline">Ver </span>
+                <span>Agenda Online</span>
                 <span className="w-1.5 h-1.5 rounded-full bg-[#72B818] animate-pulse" />
+              </button>
+            )}
+
+            {/* Clinic Staff CRM & ToT Trigger */}
+            {onOpenAdmin && (
+              <button
+                id="header-admin-btn"
+                onClick={onOpenAdmin}
+                className="min-h-[40px] hidden xl:flex items-center justify-center p-2 rounded-full bg-white/80 hover:bg-white border border-[#CCD8C4] hover:border-[#1B4D24] text-[#566D5D] hover:text-[#1B4D24] transition-all cursor-pointer shadow-2xs"
+                title="Gestão & CRM da Clínica (Acesso Médico Dr. Tannuri)"
+                aria-label="Gestão & CRM da Clínica"
+              >
+                <Users className="w-4 h-4" />
               </button>
             )}
 
@@ -265,7 +287,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
                         <span className="text-sm font-bold tracking-tight">{item.label}</span>
                       </div>
 
-                      {item.isHighlight ? (
+                      {item.target === 'agenda' ? (
+                        <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1B4D24] text-[#AEE938] font-mono-data font-bold shadow-2xs">
+                          Horários Abertos
+                        </span>
+                      ) : item.isHighlight ? (
                         <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#2C6E14] text-white font-mono-data font-bold shadow-2xs">
                           Consultas & Valores
                         </span>
@@ -332,6 +358,19 @@ export const Header: React.FC<HeaderProps> = ({ onOpenBooking }) => {
                 <span>Conhecer Planos & Agendar</span>
                 <ArrowRight className="w-4 h-4 text-[#AEE938]" />
               </button>
+
+              {onOpenAdmin && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    onOpenAdmin();
+                  }}
+                  className="w-full py-2 text-xs text-[#1B4D24] hover:text-[#0A160F] font-bold text-center block cursor-pointer"
+                >
+                  Área da Clínica & CRM (Acesso Restrito)
+                </button>
+              )}
 
               <p className="text-[10px] text-center text-[#566D5D] font-mono-data pt-1">
                 Dr. Luiz Tannuri • Nutrição Esportiva & Precisão Clínica

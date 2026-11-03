@@ -1,0 +1,6 @@
+{
+  "summary": "Plano de implementação completo estruturado sob o framework Tree of Thoughts (ToT) para a funcionalidade 'Ver Agenda Online' e jornada dos CTAs da plataforma do Dr. Luiz Tannuri. Contempla a avaliação do estado atual, a modelagem de 3 ramos de pensamento (ToT), a arquitetura de persistência em Firestore com painel administrativo interno de conversão, integração bidirecional com Google Calendar e Google Sheets, e disparo contextualizado para o WhatsApp com pré-triagem clínica e protocolo unificado.",
+  "updatedAt": "2026-11-03T16:09:05.687718499Z",
+  "requestFeedback": true,
+  "userFacing": true
+}

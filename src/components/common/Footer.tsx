@@ -4,9 +4,10 @@ import { CLIENT_INFO } from '../../data/canonicalCatalog';
 
 interface FooterProps {
   onOpenTelemetry?: () => void;
+  onOpenAdmin?: () => void;
 }
 
-export const Footer: React.FC<FooterProps> = ({ onOpenTelemetry }) => {
+export const Footer: React.FC<FooterProps> = ({ onOpenTelemetry, onOpenAdmin }) => {
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
     if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -76,6 +77,18 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTelemetry }) => {
                   Dúvidas Frequentes (FAQ)
                 </button>
               </li>
+              {onOpenAdmin && (
+                <li className="pt-2 border-t border-[#CCD8C4]/60">
+                  <button 
+                    id="footer-nav-admin" 
+                    onClick={onOpenAdmin} 
+                    className="text-[#1B4D24] font-bold hover:text-[#EB651A] transition-colors cursor-pointer flex items-center gap-1.5"
+                  >
+                    <span>Gestão & CRM da Clínica</span>
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#72B818]" />
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
 
@@ -128,6 +141,17 @@ export const Footer: React.FC<FooterProps> = ({ onOpenTelemetry }) => {
             <span className="hover:text-[#0A160F] cursor-pointer">Política de Privacidade (LGPD)</span>
             <span>•</span>
             <span className="hover:text-[#0A160F] cursor-pointer">Segurança de Dados</span>
+            {onOpenAdmin && (
+              <>
+                <span>•</span>
+                <button 
+                  onClick={onOpenAdmin} 
+                  className="text-[#1B4D24] font-bold hover:underline cursor-pointer"
+                >
+                  Área do Profissional
+                </button>
+              </>
+            )}
           </div>
         </div>
 

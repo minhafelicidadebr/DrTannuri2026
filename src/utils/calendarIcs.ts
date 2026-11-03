@@ -38,14 +38,29 @@ export function getAppointmentDurationMinutes(serviceId: string): number {
  * Parses time string (e.g. "09:30" or "08:00 - 09:00") and date into start and end Date objects
  * Handles Horário de Brasília (America/Sao_Paulo).
  */
-function calculateStartEndDates(date: Date, timeStr: string, durationMinutes: number = 60) {
-  const cleanTime = timeStr.split('-')[0].trim();
-  const [hours, minutes] = cleanTime.split(':').map(Number);
-  const startDate = new Date(date);
-  startDate.setHours(hours, minutes, 0, 0);
+function calculateStartEndDates(dateInput: Date | string, timeStr?: string, durationMinutes: number = 60) {
+  try {
+    const rawDate = dateInput instanceof Date ? dateInput : new Date(dateInput || Date.now());
+    const validDate = isNaN(rawDate.getTime()) ? new Date() : rawDate;
 
-  const endDate = new Date(startDate.getTime() + durationMinutes * 60 * 1000);
-  return { startDate, endDate };
+    let hours = 9;
+    let minutes = 0;
+    if (timeStr && typeof timeStr === 'string') {
+      const cleanTime = timeStr.split('-')[0].trim();
+      const parts = cleanTime.split(':').map(Number);
+      if (typeof parts[0] === 'number' && !isNaN(parts[0])) hours = parts[0];
+      if (typeof parts[1] === 'number' && !isNaN(parts[1])) minutes = parts[1];
+    }
+
+    const startDate = new Date(validDate);
+    startDate.setHours(hours, minutes, 0, 0);
+    const dur = typeof durationMinutes === 'number' && !isNaN(durationMinutes) ? durationMinutes : 60;
+    const endDate = new Date(startDate.getTime() + dur * 60 * 1000);
+    return { startDate, endDate };
+  } catch {
+    const fallbackStart = new Date();
+    return { startDate: fallbackStart, endDate: new Date(fallbackStart.getTime() + 60 * 60 * 1000) };
+  }
 }
 
 /**
@@ -125,7 +140,14 @@ export function getGoogleCalendarUrl(appointment: BookingAppointment): string {
     duration
   );
 
-  const formatGCal = (d: Date) => d.toISOString().replace(/-|:|\.\d+/g, '');
+  const formatGCal = (d: Date) => {
+    try {
+      const valid = isNaN(d.getTime()) ? new Date() : d;
+      return valid.toISOString().replace(/-|:|\.\d+/g, '');
+    } catch {
+      return new Date().toISOString().replace(/-|:|\.\d+/g, '');
+    }
+  };
 
   const title = encodeURIComponent(`Dr. Luiz Tannuri - Horário Pretendido (${appointment.service.name})`);
   const details = encodeURIComponent(

@@ -14,6 +14,7 @@ import { FAQSection } from './components/features/FAQSection';
 import { FinalCTA } from './components/features/FinalCTA';
 import { BookingModal } from './components/features/booking/BookingModal';
 import { GoogleReviewsModal } from './components/common/GoogleReviewsModal';
+import { ClinicAdminDashboard } from './components/admin/ClinicAdminDashboard';
 import { PlanItem } from './types';
 import { CLIENT_INFO } from './data/canonicalCatalog';
 import { VISUAL_ASSETS } from './data/imageAssets';
@@ -30,6 +31,9 @@ export default function App() {
 
   // Google Reviews Modal State
   const [reviewsOpen, setReviewsOpen] = useState(false);
+
+  // Clinic Admin / CRM Modal State
+  const [adminOpen, setAdminOpen] = useState(false);
 
   // Initialize page analytics
   useEffect(() => {
@@ -66,6 +70,7 @@ export default function App() {
       <Header 
         onOpenConcierge={() => handleOpenConcierge()} 
         onOpenBooking={handleOpenBooking}
+        onOpenAdmin={() => setAdminOpen(true)}
       />
 
       {/* Main Narrative Sections */}
@@ -123,7 +128,7 @@ export default function App() {
       </main>
 
       {/* 11. Rodapé Institucional e Regulatório */}
-      <Footer />
+      <Footer onOpenAdmin={() => setAdminOpen(true)} />
 
       {/* 12. Floating Persistent Concierge Trigger with Clara Avatar */}
       <div className="fixed bottom-[max(1rem,env(safe-area-inset-bottom))] right-[max(1rem,env(safe-area-inset-right))] z-40">
@@ -194,6 +199,12 @@ export default function App() {
         isOpen={reviewsOpen}
         onClose={() => setReviewsOpen(false)}
         onOpenBooking={handleOpenBooking}
+      />
+
+      {/* 17. Clinic Admin & ToT Strategy CRM Dashboard */}
+      <ClinicAdminDashboard
+        isOpen={adminOpen}
+        onClose={() => setAdminOpen(false)}
       />
 
     </div>

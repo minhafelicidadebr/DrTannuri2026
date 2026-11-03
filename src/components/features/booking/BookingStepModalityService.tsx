@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Building2, Video, Check, Sparkles, ArrowRight, ShieldCheck, Clock, AlertCircle } from 'lucide-react';
 import { BookingModality, BookingServiceItem } from '../../../types/booking';
-import { BOOKING_SERVICES } from '../../../data/bookingServices';
+import { BOOKING_SERVICES, getServiceDisplayPrice } from '../../../data/bookingServices';
 import { CLIENT_INFO, formatBRL } from '../../../data/canonicalCatalog';
 
 interface BookingStepModalityServiceProps {
@@ -24,15 +24,17 @@ export const BookingStepModalityService: React.FC<BookingStepModalityServiceProp
   // Filter services compatible with current modality and category
   const filteredServices = BOOKING_SERVICES.filter((service) => {
     const matchesCategory = filterCategory === 'todos' || service.category === filterCategory;
-    const matchesModality = service.modalitiesAllowed.includes(selectedModality);
+    const matchesModality = Array.isArray(service.modalitiesAllowed)
+      ? service.modalitiesAllowed.includes(selectedModality)
+      : true;
     return matchesCategory && matchesModality;
   });
 
   const handleModalityChange = (modality: BookingModality) => {
     onSelectModality(modality);
     // If selected service isn't allowed in new modality, auto-adjust to a valid one
-    if (selectedService && !selectedService.modalitiesAllowed.includes(modality)) {
-      const fallback = BOOKING_SERVICES.find((s) => s.modalitiesAllowed.includes(modality));
+    if (selectedService && Array.isArray(selectedService.modalitiesAllowed) && !selectedService.modalitiesAllowed.includes(modality)) {
+      const fallback = BOOKING_SERVICES.find((s) => Array.isArray(s.modalitiesAllowed) && s.modalitiesAllowed.includes(modality));
       if (fallback) onSelectService(fallback);
     }
   };
@@ -193,12 +195,23 @@ export const BookingStepModalityService: React.FC<BookingStepModalityServiceProp
               {/* Price & Selection Indicator */}
               <div className="flex sm:flex-col items-center sm:items-end justify-between sm:justify-center gap-2 shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-[#CCD8C4]/60">
                 <div className="text-right">
-                  <span className="text-[10px] uppercase font-mono-data text-[#566D5D] block">Valor ({selectedModality})</span>
+                  <span className="text-[10px] uppercase font-mono-data text-[#566D5D] block">
+                    Valor ({selectedModality === 'online' ? 'Online' : 'Presencial DF'})
+                  </span>
                   <div className="text-base sm:text-lg font-mono-data font-black text-[#0A160F]">
-                    {service.priceCentsByModality?.[selectedModality]
-                      ? `${formatBRL(service.priceCentsByModality[selectedModality])}${service.id === 'recorrente_mensal' ? '/mês' : ''}`
-                      : service.price}
+                    {getServiceDisplayPrice(service, selectedModality)}
                   </div>
+                  <span className="text-[10px] text-[#2C6E14] font-mono-data font-semibold block">
+                    {service.id === 'plano_assinatura' 
+                      ? 'mensalidade • sem carência' 
+                      : service.id === 'programa_longevidade_vip' 
+                      ? 'investimento único • 6 meses' 
+                      : service.id === 'programa_metabolico' 
+                      ? 'investimento único • 12 semanas' 
+                      : service.id === 'diagnostico_inicial'
+                      ? 'investimento único • 60 min'
+                      : 'valor avulso'}
+                  </span>
                 </div>
 
                 <div className={`w-7 h-7 rounded-xl flex items-center justify-center transition-all ${

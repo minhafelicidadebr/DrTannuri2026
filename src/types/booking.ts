@@ -35,6 +35,8 @@ export interface BookingFormData {
 
 export type BookingStep = 1 | 2 | 3 | 4;
 
+export type AppointmentStatus = 'pendente' | 'em_contato' | 'confirmado' | 'cancelado' | 'realizado';
+
 export interface BookingAppointment {
   modality: BookingModality;
   service: BookingServiceItem;
@@ -44,4 +46,48 @@ export interface BookingAppointment {
   patient: BookingFormData;
   bookingCode: string;
   createdAt: string;
+  status?: AppointmentStatus;
+  internalNotes?: string;
+  source?: string;
 }
+
+export interface StoredAppointment {
+  id: string;
+  bookingCode: string;
+  patientName: string;
+  patientWhatsApp: string;
+  patientEmail: string;
+  primaryGoal: string;
+  medicalNotes?: string;
+  serviceId: string;
+  serviceName: string;
+  serviceCategory: string;
+  modality: BookingModality;
+  priceCents: number;
+  formattedPrice: string;
+  appointmentDate: string; // YYYY-MM-DD
+  slotTime: string;
+  slotPeriod: 'manha' | 'tarde' | 'noite';
+  isFastingRecommended: boolean;
+  status: AppointmentStatus;
+  source: string;
+  createdAt: string;
+  updatedAt: string;
+  internalNotes?: string;
+}
+
+export interface ClinicMetrics {
+  totalRequests: number;
+  pendingCount: number;
+  inContactCount: number;
+  confirmedCount: number;
+  completedCount: number;
+  conversionRatePercent: number;
+  byModality: {
+    presencial: number;
+    online: number;
+  };
+  byService: Record<string, { name: string; count: number; totalEstimatedValue: number }>;
+  recentRequests: StoredAppointment[];
+}
+

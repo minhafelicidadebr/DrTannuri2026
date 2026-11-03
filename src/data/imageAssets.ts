@@ -105,11 +105,11 @@ export const VISUAL_ASSETS: Record<string, VisualAsset> = {
     category: "cta"
   },
   conciergeAvatar: {
-    src: conciergeAvatarImg,
-    alt: "Clara, Concierge Clínica de Inteligência Metabólica do Dr. Luiz Tannuri",
-    caption: "Clara - Guia de Orientação e Acolhimento Clínico Dr. Luiz Tannuri",
+    src: '/tannuriacademy.jpg',
+    alt: "Dr. Luiz Tannuri — Nutrição de Precisão & Acompanhamento Contínuo",
+    caption: "Dr. Luiz Tannuri — Assistente Virtual de Inteligência Metabólica",
     aspectRatio: "1/1",
-    focalPoint: "center center",
+    focalPoint: "center 12%",
     category: "clinical"
   },
   addonInBody: {
@@ -137,11 +137,11 @@ export const VISUAL_ASSETS: Record<string, VisualAsset> = {
     category: "addon"
   },
   drTanutriPortrait: {
-    src: drTanutriPortraitImg,
+    src: '/tannuriacademy.jpg',
     alt: "Dr. Luiz Tannuri — Nutricionista Esportivo e Clínico",
     caption: "Dr. Luiz Tannuri — Fisiologia do Exercício, Bioenergética e Recomposição Corporal",
     aspectRatio: "1/1",
-    focalPoint: "center center",
+    focalPoint: "center 12%",
     category: "clinical"
   },
   sportsHero: {

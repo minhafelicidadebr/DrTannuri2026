@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { ChevronLeft, ChevronRight, Clock, Calendar, Check, AlertCircle, ArrowLeft, ArrowRight, Sun, Sunset, Moon } from 'lucide-react';
 import { TimeSlot, BookingServiceItem, BookingModality } from '../../../types/booking';
-import { generateTimeSlotsForDate } from '../../../data/bookingServices';
+import { generateTimeSlotsForDate, getServiceDisplayPrice } from '../../../data/bookingServices';
 
 interface BookingStepDateTimeProps {
   selectedDate: Date;
@@ -113,9 +113,10 @@ export const BookingStepDateTime: React.FC<BookingStepDateTimeProps> = ({
           <span className="text-[#384C3E] font-medium">Serviço:</span>
           <strong className="text-[#0A160F]">{service.name}</strong>
         </div>
-        <span className="font-mono-data font-bold text-[#1B4D24] bg-white px-2.5 py-1 rounded-lg border border-[#CCD8C4]">
-          {service.price}
-        </span>
+        <div className="flex items-center gap-1.5 font-mono-data font-bold text-[#1B4D24] bg-white px-3 py-1 rounded-lg border border-[#CCD8C4]">
+          <span className="text-[10px] text-[#566D5D] uppercase">{modality === 'online' ? 'Online' : 'Presencial DF'}:</span>
+          <span>{getServiceDisplayPrice(service, modality)}</span>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">

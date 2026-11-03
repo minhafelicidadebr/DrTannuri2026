@@ -132,7 +132,155 @@ function getDeterministicFallback(userMessage: string, context?: any): string {
 }
 
 
-// In-memory lead storage for demonstration & opt-in
+import fs from "fs";
+
+// Appointments & CRM Persistent Engine
+interface StoredAppointmentDoc {
+  id: string;
+  bookingCode: string;
+  patientName: string;
+  patientWhatsApp: string;
+  patientEmail: string;
+  primaryGoal: string;
+  medicalNotes?: string;
+  serviceId: string;
+  serviceName: string;
+  serviceCategory: string;
+  modality: 'online' | 'presencial';
+  priceCents: number;
+  formattedPrice: string;
+  appointmentDate: string; // YYYY-MM-DD
+  slotTime: string;
+  slotPeriod: 'manha' | 'tarde' | 'noite';
+  isFastingRecommended: boolean;
+  status: 'pendente' | 'em_contato' | 'confirmado' | 'cancelado' | 'realizado';
+  source: string;
+  createdAt: string;
+  updatedAt: string;
+  internalNotes?: string;
+}
+
+const DATA_DIR = path.join(process.cwd(), "data");
+const APPOINTMENTS_FILE = path.join(DATA_DIR, "appointments.json");
+
+function ensureDataDirectory() {
+  try {
+    if (!fs.existsSync(DATA_DIR)) {
+      fs.mkdirSync(DATA_DIR, { recursive: true });
+    }
+  } catch (err) {
+    console.warn("[Storage] Could not create data directory, using memory:", err);
+  }
+}
+
+// Seed initial canonical examples demonstrating the clinic's workflow
+const INITIAL_APPOINTMENTS_SEED: StoredAppointmentDoc[] = [
+  {
+    id: "app_1001",
+    bookingCode: "LTN-83192",
+    patientName: "Rodrigo Almeida",
+    patientWhatsApp: "+55 61 98112-4490",
+    patientEmail: "rodrigo.almeida@empresa.com.br",
+    primaryGoal: "Recomposição corporal e ganho de massa magra sem perda de rendimento no Jiu-Jitsu.",
+    medicalNotes: "Treina 4x na semana. Refeições desreguladas por conta de reuniões frequentes.",
+    serviceId: "programa_metabolismo_12semanas",
+    serviceName: "Programa Metabolismo 12 Semanas",
+    serviceCategory: "programa",
+    modality: "presencial",
+    priceCents: 199900,
+    formattedPrice: "R$ 1.999",
+    appointmentDate: new Date(Date.now() + 86400000 * 2).toISOString().split("T")[0],
+    slotTime: "08:00 - 09:00",
+    slotPeriod: "manha",
+    isFastingRecommended: true,
+    status: "confirmado",
+    source: "cta_plans",
+    createdAt: new Date(Date.now() - 3600000 * 18).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 2).toISOString(),
+    internalNotes: "Bioimpedância InBody 120 agendada para primeira hora (em jejum de 3h). Paciente já notificado via WhatsApp."
+  },
+  {
+    id: "app_1002",
+    bookingCode: "LTN-59421",
+    patientName: "Dra. Camila Vasconcelos",
+    patientWhatsApp: "+55 11 99234-8812",
+    patientEmail: "camila.vasconcelos@hospital.med.br",
+    primaryGoal: "Controle de gordura visceral e organização de alimentação durante viagens de plantão e congressos.",
+    medicalNotes: "Reside em São Paulo, optou por acompanhamento 100% online.",
+    serviceId: "diagnostico_inicial",
+    serviceName: "Diagnóstico Inicial de Precisão (60 min)",
+    serviceCategory: "entrada",
+    modality: "online",
+    priceCents: 45000,
+    formattedPrice: "R$ 450",
+    appointmentDate: new Date(Date.now() + 86400000 * 3).toISOString().split("T")[0],
+    slotTime: "17:45 - 18:45",
+    slotPeriod: "noite",
+    isFastingRecommended: false,
+    status: "em_contato",
+    source: "cta_hero",
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    internalNotes: "Recepção enviou dados de link da telemedicina no WhatsApp. Aguardando confirmação do turno executivo."
+  },
+  {
+    id: "app_1003",
+    bookingCode: "LTN-28314",
+    patientName: "Marcelo Fonseca (Executivo)",
+    patientWhatsApp: "+55 61 99876-1200",
+    patientEmail: "marcelo.fonseca@capital.com",
+    primaryGoal: "Programa VIP de Longevidade: protocolo completo para viagens internacionais e biomarcadores.",
+    medicalNotes: "Viaja com frequência para Miami e Londres. Precisa de plano adaptável a fusos e hotéis.",
+    serviceId: "programa_longevidade_vip",
+    serviceName: "Programa 6 Meses: Performance & Longevidade (VIP)",
+    serviceCategory: "vip",
+    modality: "presencial",
+    priceCents: 319900,
+    formattedPrice: "R$ 3.199",
+    appointmentDate: new Date(Date.now() + 86400000 * 5).toISOString().split("T")[0],
+    slotTime: "09:15 - 10:15",
+    slotPeriod: "manha",
+    isFastingRecommended: true,
+    status: "pendente",
+    source: "cta_header",
+    createdAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    updatedAt: new Date(Date.now() - 3600000 * 1).toISOString(),
+    internalNotes: "Novo lead de alto valor. Prioridade máxima para contato da recepção matutina."
+  }
+];
+
+let appointmentsCache: StoredAppointmentDoc[] = [];
+
+function loadAppointments(): StoredAppointmentDoc[] {
+  ensureDataDirectory();
+  try {
+    if (fs.existsSync(APPOINTMENTS_FILE)) {
+      const data = fs.readFileSync(APPOINTMENTS_FILE, "utf-8");
+      appointmentsCache = JSON.parse(data);
+      return appointmentsCache;
+    }
+  } catch (err) {
+    console.warn("[Storage] Error reading appointments file:", err);
+  }
+  appointmentsCache = [...INITIAL_APPOINTMENTS_SEED];
+  saveAppointments(appointmentsCache);
+  return appointmentsCache;
+}
+
+function saveAppointments(items: StoredAppointmentDoc[]) {
+  ensureDataDirectory();
+  try {
+    fs.writeFileSync(APPOINTMENTS_FILE, JSON.stringify(items, null, 2), "utf-8");
+  } catch (err) {
+    console.warn("[Storage] Error writing appointments file:", err);
+  }
+  appointmentsCache = items;
+}
+
+// Initialize storage
+loadAppointments();
+
+// In-memory lead storage for legacy endpoint compatibility
 const leadStorage: any[] = [];
 
 // API Routes
@@ -192,7 +340,6 @@ app.post("/api/concierge", async (req, res) => {
         });
       } catch (err38: any) {
         try {
-          // Fallback to gemini-3.6-flash if gemini-3.8-flash experiences high demand
           response = await ai.models.generateContent({
             model: "gemini-3.6-flash",
             contents: [
@@ -252,32 +399,314 @@ app.get("/api/quote", (req, res) => {
   return res.json(quote);
 });
 
-// Lead preference endpoint (Ramo 3: Registro de preferência local / Sem promessas falsas de envio)
-app.post("/api/lead", (req, res) => {
-  const { name, phone, email, interest, consent } = req.body;
-  if (!consent) {
-    return res.status(400).json({ error: "Consentimento de privacidade é obrigatório para envio." });
+// ============================================================================
+// APPOINTMENTS & CRM API (Tree of Thoughts - Gestão de Informação de Elite)
+// ============================================================================
+
+// POST /api/appointments: Registro de Solicitação de Horário com Verificação Canônica
+app.post("/api/appointments", (req, res) => {
+  const {
+    fullName,
+    whatsApp,
+    email,
+    primaryGoal,
+    medicalNotes,
+    serviceId,
+    modality,
+    dateString,
+    slotTime,
+    slotPeriod,
+    isFastingRecommended,
+    source
+  } = req.body;
+
+  if (!fullName || !whatsApp || !serviceId || !modality || !dateString || !slotTime) {
+    return res.status(400).json({
+      error: "Campos obrigatórios incompletos para solicitação de horário."
+    });
   }
 
-  const newLead = {
-    id: `pref_${Date.now()}`,
-    name: name?.trim() || "Visitante",
-    phone: phone?.trim() || "",
-    email: email?.trim() || "",
-    interest: interest || "diagnostico_inicial",
+  // Obter valor canônico auditado
+  let serviceName = "Atendimento Nutricional";
+  let serviceCategory = "protocolo";
+  let priceCents = 45000;
+  let formattedPrice = "R$ 450";
+
+  const canonicalOffer = COMMERCIAL_OFFERS.find(o => o.id === serviceId);
+  if (canonicalOffer) {
+    serviceName = canonicalOffer.name;
+    serviceCategory = canonicalOffer.category;
+    priceCents = modality === 'presencial' ? canonicalOffer.pricesCents.presencial : canonicalOffer.pricesCents.online;
+    formattedPrice = formatBRL(priceCents);
+  } else {
+    const canonicalAddon = COMMERCIAL_ADDONS.find(a => a.id === serviceId);
+    if (canonicalAddon) {
+      serviceName = canonicalAddon.name;
+      serviceCategory = "addon";
+      priceCents = (modality === 'presencial' ? canonicalAddon.pricesCents.presencial : canonicalAddon.pricesCents.online) || 9900;
+      formattedPrice = formatBRL(priceCents);
+    }
+  }
+
+  // Gera código único oficial de protocolo
+  const randomSuffix = Math.floor(10000 + Math.random() * 90000);
+  const bookingCode = `LTN-${randomSuffix}`;
+
+  const newDoc: StoredAppointmentDoc = {
+    id: `app_${Date.now()}_${randomSuffix}`,
+    bookingCode,
+    patientName: fullName.trim(),
+    patientWhatsApp: whatsApp.trim(),
+    patientEmail: (email || "").trim(),
+    primaryGoal: (primaryGoal || "Recomposição Corporal & Saúde Integrativa").trim(),
+    medicalNotes: (medicalNotes || "").trim(),
+    serviceId,
+    serviceName,
+    serviceCategory,
+    modality,
+    priceCents,
+    formattedPrice,
+    appointmentDate: dateString,
+    slotTime,
+    slotPeriod: slotPeriod || "manha",
+    isFastingRecommended: Boolean(isFastingRecommended),
+    status: "pendente",
+    source: source || "ver_agenda_online",
     createdAt: new Date().toISOString(),
-    consent: true
+    updatedAt: new Date().toISOString(),
+    internalNotes: `Registrado via plataforma web. Aguardando alinhamento humano com recepção em ${CLINIC_CONFIG.cityRegion}.`
   };
 
-  leadStorage.push(newLead);
+  const current = loadAppointments();
+  current.unshift(newDoc);
+  saveAppointments(current);
+
+  return res.status(201).json({
+    success: true,
+    message: "Solicitação registrada com sucesso no sistema clínico.",
+    appointment: newDoc,
+    isWhatsAppConfirmed: CLINIC_CONFIG.isWhatsAppConfirmed,
+    clinicWhatsApp: CLINIC_CONFIG.primaryWhatsApp,
+    clinicWhatsAppClean: CLINIC_CONFIG.whatsAppClean
+  });
+});
+
+// GET /api/admin/appointments: Lista filtrada de solicitações
+app.get("/api/admin/appointments", (req, res) => {
+  const { status, search, modality } = req.query;
+  let items = loadAppointments();
+
+  if (status && typeof status === 'string' && status !== 'todos') {
+    items = items.filter(a => a.status === status);
+  }
+
+  if (modality && typeof modality === 'string' && modality !== 'todos') {
+    items = items.filter(a => a.modality === modality);
+  }
+
+  if (search && typeof search === 'string') {
+    const q = search.toLowerCase();
+    items = items.filter(a =>
+      a.patientName.toLowerCase().includes(q) ||
+      a.bookingCode.toLowerCase().includes(q) ||
+      a.patientWhatsApp.includes(q) ||
+      a.serviceName.toLowerCase().includes(q) ||
+      a.primaryGoal.toLowerCase().includes(q)
+    );
+  }
+
+  return res.json({
+    total: items.length,
+    appointments: items
+  });
+});
+
+// PATCH /api/admin/appointments/:id: Atualização de status e notas clínicas internas
+app.patch("/api/admin/appointments/:id", (req, res) => {
+  const { id } = req.params;
+  const { status, internalNotes } = req.body;
+
+  const current = loadAppointments();
+  const index = current.findIndex(a => a.id === id || a.bookingCode === id);
+
+  if (index === -1) {
+    return res.status(404).json({ error: "Solicitação não encontrada." });
+  }
+
+  if (status) {
+    current[index].status = status;
+  }
+  if (internalNotes !== undefined) {
+    current[index].internalNotes = internalNotes;
+  }
+  current[index].updatedAt = new Date().toISOString();
+
+  saveAppointments(current);
 
   return res.json({
     success: true,
-    message: "Solicitação de preferência registrada. Nossa equipe fará a conferência de agenda.",
-    leadId: newLead.id,
-    isWhatsAppConfirmed: CLINIC_CONFIG.isWhatsAppConfirmed
+    appointment: current[index]
   });
 });
+
+// GET /api/admin/metrics: Painel Analítico & Indicadores de Conversão do Funil
+app.get("/api/admin/metrics", (_req, res) => {
+  const items = loadAppointments();
+
+  const totalRequests = items.length;
+  const pendingCount = items.filter(i => i.status === 'pendente').length;
+  const inContactCount = items.filter(i => i.status === 'em_contato').length;
+  const confirmedCount = items.filter(i => i.status === 'confirmado').length;
+  const completedCount = items.filter(i => i.status === 'realizado').length;
+
+  const closedWon = confirmedCount + completedCount;
+  const conversionRatePercent = totalRequests > 0 ? Math.round((closedWon / totalRequests) * 100) : 0;
+
+  const byModality = {
+    presencial: items.filter(i => i.modality === 'presencial').length,
+    online: items.filter(i => i.modality === 'online').length
+  };
+
+  const byService: Record<string, { name: string; count: number; totalEstimatedValue: number }> = {};
+  for (const item of items) {
+    if (!byService[item.serviceId]) {
+      byService[item.serviceId] = {
+        name: item.serviceName,
+        count: 0,
+        totalEstimatedValue: 0
+      };
+    }
+    byService[item.serviceId].count++;
+    byService[item.serviceId].totalEstimatedValue += (item.priceCents / 100);
+  }
+
+  return res.json({
+    totalRequests,
+    pendingCount,
+    inContactCount,
+    confirmedCount,
+    completedCount,
+    conversionRatePercent,
+    byModality,
+    byService,
+    recentRequests: items.slice(0, 10)
+  });
+});
+
+// GET /api/admin/export-csv: Exportação compatível com Google Sheets e Excel
+app.get("/api/admin/export-csv", (_req, res) => {
+  const items = loadAppointments();
+
+  const headers = [
+    "Protocolo",
+    "Data Criacao",
+    "Status",
+    "Paciente",
+    "WhatsApp",
+    "Email",
+    "Servico",
+    "Modalidade",
+    "Valor (BRL)",
+    "Data Agendada",
+    "Horario",
+    "Jejum Recomendado",
+    "Objetivo Clinico",
+    "Notas Recepcao"
+  ];
+
+  const escapeCSV = (val: any) => {
+    const str = String(val ?? "").replace(/"/g, '""');
+    return `"${str}"`;
+  };
+
+  const rows = items.map(a => [
+    escapeCSV(a.bookingCode),
+    escapeCSV(a.createdAt.split("T")[0]),
+    escapeCSV(a.status),
+    escapeCSV(a.patientName),
+    escapeCSV(a.patientWhatsApp),
+    escapeCSV(a.patientEmail),
+    escapeCSV(a.serviceName),
+    escapeCSV(a.modality === 'presencial' ? 'Presencial (Brasilia)' : 'Telemedicina HD'),
+    escapeCSV(a.formattedPrice),
+    escapeCSV(a.appointmentDate),
+    escapeCSV(a.slotTime),
+    escapeCSV(a.isFastingRecommended ? 'Sim' : 'Nao'),
+    escapeCSV(a.primaryGoal),
+    escapeCSV(a.internalNotes || '')
+  ].join(";"));
+
+  const bom = "\uFEFF"; // Garante acentuação perfeita no Excel e Google Sheets
+  const csvContent = bom + [headers.join(";"), ...rows].join("\r\n");
+
+  res.setHeader("Content-Type", "text/csv; charset=utf-8");
+  res.setHeader("Content-Disposition", `attachment; filename=agendamentos_dr_tannuri_${Date.now()}.csv`);
+  return res.send(csvContent);
+});
+
+// POST /api/admin/tot-analysis: Síntese Tree of Thoughts para Otimização de Atendimento
+app.post("/api/admin/tot-analysis", async (req, res) => {
+  const { appointmentId } = req.body;
+  const items = loadAppointments();
+  const appointment = items.find(a => a.id === appointmentId || a.bookingCode === appointmentId);
+
+  if (!appointment) {
+    return res.status(404).json({ error: "Agendamento não encontrado para análise ToT." });
+  }
+
+  const prompt = `Você é o estrategista clínico e comercial do Dr. Luiz Tannuri (Nutrição Esportiva, Precisão Metabólica e Longevidade).
+Aplique o framework Tree of Thoughts (ToT) para analisar esta solicitação e prescrever as 3 melhores ações de fechamento da recepção:
+
+DADOS DO PACIENTE:
+- Nome: ${appointment.patientName}
+- Serviço Solicitado: ${appointment.serviceName} (${appointment.modality}) - ${appointment.formattedPrice}
+- Data/Horário Escolhido: ${appointment.appointmentDate} às ${appointment.slotTime}
+- Objetivo Declarado: ${appointment.primaryGoal}
+- Observações: ${appointment.medicalNotes || "Nenhuma"}
+
+ESTRUTURE SUA RESPOSTA EM 3 RAMOS DE PENSAMENTO (ToT):
+1. Ramo Rápido (Acolhimento imediato via WhatsApp com script personalizado).
+2. Ramo de Valor Clínico (Como ancorar os benefícios do InBody 120 e da metodologia do Dr. Tannuri para este objetivo).
+3. Ramo de Retenção/Upgrade (Sugestão ética de plano futuro ou acompanhamento contínuo).
+Conclua com o Script de Mensagem exato pronto para a secretária enviar no WhatsApp.`;
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (apiKey) {
+    try {
+      const ai = new GoogleGenAI({ apiKey });
+      const response = await ai.models.generateContent({
+        model: "gemini-3.8-flash",
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+        config: { temperature: 0.2, maxOutputTokens: 2048 }
+      });
+      const text = response?.text;
+      if (text) {
+        return res.json({ analysis: text, source: "gemini-tot" });
+      }
+    } catch (e: any) {
+      console.warn("[ToT Analysis] Gemini call failed, using deterministic ToT:", e?.message || e);
+    }
+  }
+
+  // Fallback determinístico de alto padrão
+  const deterministicToT = `### Análise Tree of Thoughts (ToT) — Dr. Luiz Tannuri
+
+**1. Ramo de Acolhimento Imediato (WhatsApp)**:
+- Paciente qualificado demonstrando foco em "${appointment.primaryGoal}".
+- Abordagem recomendada: Validar o horário ${appointment.slotTime} de ${appointment.appointmentDate} parabenizando pela iniciativa em priorizar a saúde metabólica.
+
+**2. Ramo de Ancoragem de Valor Clínico**:
+- Destacar que o atendimento inclui a avaliação segmentada InBody 120 (se presencial em Brasília) e o método testado em mais de 10 anos de prática clínica e no esporte de alta performance com o Dr. Luiz Tannuri.
+
+**3. Ramo de Ação Favorável ao Fechamento**:
+- Enviar confirmação com instruções de preparo pré-consulta (jejum leve para bioimpedância se aplicável) e dados do consultório.
+
+**Script Sugerido para a Recepção:**
+"Olá, ${appointment.patientName}! Aqui é da equipe do Dr. Luiz Tannuri em Brasília. Recebemos sua preferência de horário para o ${appointment.serviceName} no dia ${appointment.appointmentDate} às ${appointment.slotTime} (Protocolo: ${appointment.bookingCode}). O Dr. Luiz já avaliou seu objetivo focado em ${appointment.primaryGoal}. Podemos confirmar esse horário para você?"`;
+
+  return res.json({ analysis: deterministicToT, source: "deterministic-tot" });
+});
+
 
 async function startServer() {
   // Vite middleware for development
