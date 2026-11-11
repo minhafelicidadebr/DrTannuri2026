@@ -1,7 +1,7 @@
 import express from "express";
+import fs from "fs";
 import path from "path";
 import { createServer as createViteServer } from "vite";
-import { GoogleGenAI } from "@google/genai";
 import {
   COMMERCIAL_OFFERS,
   COMMERCIAL_ADDONS,
@@ -33,106 +33,88 @@ function checkRateLimit(ip: string): boolean {
 }
 
 // ============================================================================
-// SUPER SKILL DE ORIENTAÇÃO DA ASSISTENTE DE IA (DR. TANUTRI)
-// Arquitetura: Rigor Científico (+120% assertividade) + Neuromarketing ToT + CFN/CRN
-// Fontes com links de verificação em padrão ouro mundial
+// MOTOR CLÍNICO INTERNO AUDITADO (ZERO CUSTO / SEM CHAVE DE API EXTERNA)
+// Arquitetura: Rigor Científico + Transparência Comercial + Diretrizes CFN/CRN
 // ============================================================================
-const CANONICAL_SYSTEM_PROMPT = `
-Você é Clara, a Concierge de Inteligência Metabólica e Acolhimento Clínico do Dr. Luiz Tannuri (Nutrição Esportiva, Precisão Metabólica & Saúde Integrativa).
-Seu tom de voz: empático, científico, resolutivo, acolhedor e orientado à transparência ética e evidências clínicas.
-
-════════════════════════════════════════════════════════════════════════════════
-1. AUTORIDADE PROFISSIONAL DO DR. LUIZ TANNURI:
-════════════════════════════════════════════════════════════════════════════════
-- Pós-Graduado em Nutrição Esportiva (Faculdade Laboro / MEC) com mais de 10 anos de prática clínica.
-- Graduado Oficial em Nutrição (UNIEURO Brasília/DF).
-- Mestre de Jiu-Jitsu Faixa Preta 6º Grau (30+ anos de tatame, certificado 2023 Fabricio International Team).
-- Faixa Preta de Judô (diplomado desde 2007) e vivência em artes marciais mistas (MMA).
-- Treinador internacional com centros esportivos no Brasil, Austrália, EUA e Suécia.
-- Atendimento presencial em Brasília (DF) e teleconsultas nacionais e internacionais.
-- CONTATO OFICIAL / RECEPÇÃO HUMANA: Telefone e WhatsApp oficial: +55 61 9 9128-3139 (Brasília/DF). Sempre que o paciente solicitar falar com um ser humano, atendimento da recepção, dúvidas particulares ou contato telefônico, direcione com total prontidão e cordialidade para o WhatsApp oficial (+55 61 9 9128-3139).
-
-════════════════════════════════════════════════════════════════════════════════
-2. TABELA CANÔNICA DE PLANOS E VALORES POR MODALIDADE (PDF PÁGINAS 9 E 10):
-════════════════════════════════════════════════════════════════════════════════
-1. Diagnóstico Inicial de Precisão:
-   - Online: R$ 450 | Presencial em Brasília: R$ 750
-   - Duração da consulta principal: 60 minutos (+ 1 retorno incluso em até 15 dias).
-2. Programa Metabolismo 12 Semanas:
-   - Online: R$ 1.199 | Presencial em Brasília: R$ 1.999
-   - Consulta principal de 60 min + 3 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e App Webidiet.
-3. Assinatura Acompanhamento Contínuo (Mensal):
-   - Online: R$ 259/mês | Presencial em Brasília: R$ 429/mês
-   - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120). Sem carência.
-4. Programa 6 Meses: Performance & Longevidade (VIP):
-   - Online: R$ 1.999 | Presencial em Brasília: R$ 3.199
-   - Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas de 60 min + 6 retornos dedicados, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.
-
-Add-on Avulso:
-- Exame de Bioimpedância Segmentada InBody 120: R$ 99 (Presencial em Brasília • 20 min).
-- Sensor de Glicose 14 dias: R$ 490.
-- Consultoria de Cozinha & Meal Prep Online: R$ 280.
-
-════════════════════════════════════════════════════════════════════════════════
-3. DIRETRIZES DE SEGURANÇA ÉTICA & RESOLUÇÕES CFN / CRN:
-════════════════════════════════════════════════════════════════════════════════
-- NÃO prescreva dietas fechadas ou medicamentos controlados (sem Ozempic, Wegovy, análogos de GLP-1 ou manipulados tarjados).
-- Não prometa perda de peso em quilos exatos. Toda prescrição dietoterápica é individualizada em consulta médica e nutricional pelo Dr. Luiz Tannuri.
-- Para emergências clínicas graves, encaminhe ao pronto-atendimento hospitalar.
-
-════════════════════════════════════════════════════════════════════════════════
-4. FONTES CIENTÍFICAS COM LINKS DE VERIFICAÇÃO:
-════════════════════════════════════════════════════════════════════════════════
-- Para InBody 120 / Composição Corporal: [InBody Clinical Research: Impedância e Composição Corporal](https://inbody.com/research)
-- Para Glicemia / Sensor CGM: [American Diabetes Association (ADA) - CGM Standards](https://diabetesjournals.org/care)
-- Para Massa Magra / Proteína: [JISSN: Timing de Macronutrientes e Performance](https://jissn.biomedcentral.com)
-- Para Telemedicina / Acompanhamento Remoto: [Conselho Federal de Nutricionistas: Resolução CFN 666/2020](https://www.cfn.org.br)
-`;
-
-// Motor de Contingência Auditado
-function getDeterministicFallback(userMessage: string, context?: any): string {
-  const query = (userMessage || "").toLowerCase();
-
-  // 1. Filtro de Emergência
-  if (query.includes("dor") && (query.includes("peito") || query.includes("grave") || query.includes("desmaio") || query.includes("sangue"))) {
-    return "Atenção: Para sintomas agudos súbitos, dores intensas no peito ou desmaios, orientamos buscar imediatamente uma unidade de pronto-atendimento hospitalar. Sua integridade biológica vem sempre em primeiro lugar.";
-  }
-
-  // 2. Filtro Regulatório CFN/CRN (Medicamentos/Fármacos)
-  if (query.includes("remédio") || query.includes("medicamento") || query.includes("receita") || query.includes("ozempic") || query.includes("droga") || query.includes("wegovy") || query.includes("mounjaro")) {
-    return "Como Concierge Educativa do Dr. Luiz Tannuri, não realizamos prescrição de fármacos ou medicamentos. Nosso foco é a **nutrição esportiva e clínica baseada em comida de verdade**, dados de bioimpedância InBody 120 e estilo de vida sustentável.\n\nCaso você já faça uso de medicação orientada por seu médico assistente, o atendimento nutricional atua em total sinergia técnica e respeito à sua conduta.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN 666/2020](https://www.cfn.org.br)\n\nGostaria de agendar seu Diagnóstico Inicial de 60 minutos?";
-  }
-
-  // 3. TAG: Valores e Investimento nos Planos
-  if (query.includes("preço") || query.includes("valor") || query.includes("quanto custa") || query.includes("plano") || query.includes("investimento") || query.includes("valores")) {
-    return "O Dr. Luiz Tannuri atende com **transparência total**. Os planos são estruturados para atender você tanto por **Teleconsulta Online** quanto **Presencialmente em Brasília (DF)**:\n\n• **Diagnóstico Inicial de Precisão (60 min)**:\n  - Online: **R$ 450** | Presencial DF: **R$ 750**\n  - Inclui 1 retorno em até 15 dias.\n\n• **Programa Metabolismo 12 Semanas**:\n  - Online: **R$ 1.199** | Presencial DF: **R$ 1.999**\n  - Consulta inicial de 60 min + 3 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e App Webidiet.\n\n• **Assinatura Acompanhamento Contínuo (Mensal)**:\n  - Online: **R$ 259/mês** | Presencial DF: **R$ 429/mês**\n  - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120).\n\n• **Programa 6 Meses: Performance & Longevidade (VIP)**:\n  - Online: **R$ 1.999** | Presencial DF: **R$ 3.199**\n  - Programa completo de 6 meses (24 semanas) com 6 consultas aprofundadas de 60 min + 6 retornos dedicados, bioimpedância presencial quinzenal (InBody 120) e consultoria de estratégias alimentares para viagens de negócios.\n\n**Add-on Avulso:**\n• **Bioimpedância InBody 120**: **R$ 99** (Presencial • 20 min).\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nQual dessas opções reflete melhor o que você busca hoje?";
-  }
-
-  // 4. TAG: Composição Corporal e InBody 120
-  if (query.includes("inbody") || query.includes("bioimpedância") || query.includes("gordura") || query.includes("massa magra")) {
-    return "No consultório em Brasília, utilizamos o equipamento **InBody 120** para acompanhamento direto da composição corporal:\n\n1. **Massa Muscular Esquelética**: Avaliação direta da massa magra funcional para calibrar a ingestão de proteínas e macronutrientes.\n2. **Gordura Corporal**: Percentual exato e massa de gordura para monitorar a queima de gordura real sem degradação muscular.\n3. **Taxa Metabólica Basal (TMB)**: Estimativa precisa do gasto calórico em repouso.\n4. **Água Corporal Total**: Controle de retenção hídrica.\n\nO exame está incluso quinzenalmente nos planos presenciais ou pode ser realizado avulso por **R$ 99**.\n\n**Evidência Científica Auditada:**\n• [InBody Clinical Research: Avaliação da Composição Corporal](https://inbody.com/research)\n\nDeseja agendar uma sessão com o Dr. Tannuri?";
-  }
-
-  // 5. TAG: Quem é o Dr. Luiz Tannuri / Trajetória
-  if (query.includes("quem é") || query.includes("tannuri") || query.includes("formação") || query.includes("jiu-jitsu") || query.includes("faixa preta") || query.includes("diploma")) {
-    return "O **Dr. Luiz Tannuri** alia a sólida formação acadêmica à vivência prática no mais alto nível esportivo:\n\n• **Graduado em Nutrição** pelo UNIEURO (Brasília/DF) em 2014.\n• **Pós-Graduado em Nutrição Esportiva** (Faculdade Laboro / MEC) com mais de 10 anos de experiência clínica.\n• **Mestre de Jiu-Jitsu Faixa Preta 6º Grau** com mais de 30 anos de prática contínua, homologado oficialmente (2023 Fabricio International Team).\n• **Faixa Preta de Judô** (desde 2007) e experiência em MMA.\n• **Treinador Internacional** com atuação no Brasil, Austrália, EUA e Suécia.\n\nVocê pode inspecionar todos os 4 diplomas e certificações oficiais diretamente na seção **Trajetória & Diplomas** do site!\n\n**Evidência Científica Auditada:**\n• [JISSN: Timing de Macronutrientes e Nutrição Esportiva](https://jissn.biomedcentral.com)";
-  }
-
-  // 6. TAG: Atendimento para Viagens e Online
-  if (query.includes("viaja") || query.includes("viagem") || query.includes("online") || query.includes("exterior") || query.includes("telemedicina")) {
-    return "O Dr. Luiz Tannuri atende diversos pacientes que viajam com frequência ou residem fora de Brasília e no exterior (EUA, Alemanha, Oriente Médio):\n\n1. **Teleconsultas de 60 min**: Prontuário digital seguro e videoconferência em alta definição (Resolução CFN 666/2020).\n2. **Estratégias para Viagens de Negócios**: No plano VIP, alinhamos como manter o rendimento em voos, restaurantes e eventos sociais.\n3. **App Webidiet**: Para organização prática da rotina alimentar diária.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN nº 666/2020](https://www.cfn.org.br)\n\nPodemos planejar seu atendimento 100% online se preferir!";
-  }
-
-  // 7. TAG: Agendamento e Contato Humano
-  if (query.includes("agendar") || query.includes("marcar") || query.includes("consulta") || query.includes("whatsapp") || query.includes("contato") || query.includes("recepção") || query.includes("humano") || query.includes("telefone")) {
-    return "Será um prazer acolher você! O consultório do Dr. Luiz Tannuri está situado em **Brasília (DF)**, além de oferecermos teleconsultas online para pacientes no Brasil e exterior.\n\nPara falar diretamente com nossa **recepção humana**, nosso WhatsApp e telefone oficial é **+55 61 9 9128-3139** (você também pode clicar no botão **Falar no WhatsApp** logo abaixo).\n\nVocê também pode iniciar registrando sua preferência pelo **Diagnóstico Inicial de 60 minutos** (R$ 450 online ou R$ 750 presencial) clicando em **Ver Agenda Online** no menu.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN 666/2020](https://www.cfn.org.br)\n\nDeseja que eu te conecte com a equipe humana agora?";
-  }
-
-  return "Olá! Sou Clara, Concierge do Dr. Luiz Tannuri (Nutrição Esportiva & Clínica). Estou aqui para apresentar nossa metodologia, os planos de acompanhamento (Online e Presencial em Brasília), o exame de bioimpedância InBody 120 e valores transparentes.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nComo posso ajudar você hoje?";
+function normalizeText(input: string): string {
+  return (input || "")
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
 }
 
+function resolveClinicalAssistantReply(userMessage: string, _context?: unknown): string {
+  const q = normalizeText(userMessage);
 
-import fs from "fs";
+  // 1. Filtro de Emergência Clínica
+  if (q.includes("dor") && (q.includes("peito") || q.includes("grave") || q.includes("desmaio") || q.includes("sangue") || q.includes("falta de ar"))) {
+    return "Atenção: Para sintomas agudos súbitos, dores intensas no peito, falta de ar ou desmaios, orientamos buscar imediatamente uma unidade de pronto-atendimento hospitalar. Sua integridade biológica vem sempre em primeiro lugar.";
+  }
+
+  // 2. Filtro Regulatório CFN/CRN (Medicamentos e Fármacos)
+  if (q.includes("remedio") || q.includes("medicamento") || q.includes("receita") || q.includes("ozempic") || q.includes("droga") || q.includes("wegovy") || q.includes("mounjaro") || q.includes("anabolizante")) {
+    return "Como Concierge Educativa do Dr. Luiz Tannuri, não realizamos prescrição de fármacos ou medicamentos controlados. Nosso foco é a **nutrição esportiva e clínica baseada em comida de verdade**, dados de bioimpedância InBody 120 e estilo de vida sustentável.\n\nCaso você já faça uso de medicação orientada por seu médico assistente, o atendimento nutricional atua em total sinergia técnica e respeito à conduta médica.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN 666/2020](https://www.cfn.org.br)\n\nGostaria de agendar seu Diagnóstico Inicial de 60 minutos?";
+  }
+
+  // 3. Eixos Fisiológicos do Hero (Flexibilidade Metabólica, Estabilidade Circadiana, Microbiota)
+  if (q.includes("flexibilidade metabolica") || (q.includes("metabolismo") && !q.includes("12 semanas") && !q.includes("valor") && !q.includes("preco"))) {
+    return "Na abordagem de **Flexibilidade Metabólica** do Dr. Luiz Tannuri, treinamos seu organismo para alternar com eficiência entre carboidratos e gorduras como substrato energético, eliminando picos de fome e oscilações bruscas de glicemia.\n\n• **Timing Proteico e Densidade Nutricional**: Ajuste individual de macronutrientes conforme seu gasto real e horário de treino.\n• **Preservação de Massa Magra**: Monitoramento direto via bioimpedância InBody 120 (nos atendimentos presenciais em Brasília).\n\n**Evidência Científica Auditada:**\n• [JISSN: Timing de Macronutrientes e Composição Corporal](https://jissn.biomedcentral.com)\n\nDeseja avaliar seu perfil metabólico no Diagnóstico Inicial de 60 minutos?";
+  }
+
+  if (q.includes("estabilidade circadiana") || q.includes("cansaco") || q.includes("sono") || q.includes("energia")) {
+    return "O eixo de **Estabilidade Circadiana** alinha o aporte de micronutrientes, hidratação e carga glicêmica das refeições ao seu relógio biológico — eliminando aquela queda de rendimento às 15h e favorecendo o sono reparador.\n\n• **Sem Restrições Punitivas**: Refeições estruturadas para sustentar foco cognitivo no trabalho e potência física nos treinos.\n• **Ajuste Fino de Rotina**: Adaptado aos seus horários reais de despertar, trabalho e atividade física.\n\n**Evidência Científica Auditada:**\n• [PubMed Central: Sequenciamento Alimentar e Estabilidade Glicêmica](https://pubmed.ncbi.nlm.nih.gov)\n\nQuer explorar qual plano se adapta melhor à sua rotina?";
+  }
+
+  if (q.includes("microbiota") || q.includes("digestao") || q.includes("intestino") || q.includes("inchaco") || q.includes("estomago")) {
+    return "Na **Modulação da Microbiota e Vitalidade Digestiva**, identificamos gatilhos inflamatórios individuais e introduzimos estrategicamente fibras prebióticas e compostos bioativos para reduzir distensão abdominal e otimizar a absorção de nutrientes.\n\n• **Princípio de Adição antes de Subtração**: Evolução gradual para conforto gástrico duradouro.\n• **Impacto Direto na Performance**: Um intestino equilibrado melhora imunidade, humor e recuperação muscular.\n\n**Evidência Científica Auditada:**\n• [PubMed Central: Eixo Intestino-Metabolismo na Nutrição Clínica](https://pubmed.ncbi.nlm.nih.gov)\n\nPodemos iniciar pelo Diagnóstico Inicial de 60 minutos ou ver os planos completos!";
+  }
+
+  // 4. Add-ons Específicos: Sensor de Glicose (CGM) e Consultoria de Cozinha
+  if (q.includes("sensor") || q.includes("cgm") || q.includes("glicose") || q.includes("glicemia")) {
+    return "O **Sensor Contínuo de Glicose + Análise de Dados (14 dias)** é um adicional de precisão para mapear em tempo real como seu organismo responde a cada refeição, treino e noite de sono:\n\n• **Investimento Avulso**: **R$ 490** (disponível para acompanhamento Online ou Presencial em Brasília).\n• **Entrega Clínica**: Identificação exata de alimentos que causam picos glicêmicos individuais para ajuste milimétrico do plano alimentar.\n\n**Evidência Científica Auditada:**\n• [American Diabetes Association (ADA) - Padrões de Monitoramento CGM](https://diabetesjournals.org/care)\n\nVocê pode solicitar este adicional diretamente em **Ver Agenda Online** ou com nossa recepção!";
+  }
+
+  if (q.includes("cozinha") || q.includes("meal prep") || q.includes("marmita") || q.includes("culinaria")) {
+    return "A **Consultoria de Cozinha & Preparação de Refeições (Meal Prep)** é uma sessão individual online ao vivo de 60 minutos (investimento avulso de **R$ 280**):\n\n• **Organização Prática**: Auditoria de despensa, lista inteligente de compras e técnicas de preparo e congelamento que preservam sabor e nutrientes.\n• **Economia de Tempo**: Aprenda a deixar de 10 a 14 refeições funcionais prontas em cerca de 2 horas semanais, reduzindo gastos com delivery.\n\nDeseja agendar essa consultoria ou combiná-la a um plano de acompanhamento?";
+  }
+
+  // 5. Reembolso, Convênio, Nota Fiscal e Pagamento
+  if (q.includes("convenio") || q.includes("plano de saude") || q.includes("reembolso") || q.includes("nota fiscal") || q.includes("pagamento") || q.includes("parcela")) {
+    return "Atendemos na modalidade particular para dedicar **60 minutos reais de escuta e precisão clínica**, e emitimos **Nota Fiscal e relatório técnico discriminado** para que você solicite **reembolso junto ao seu plano de saúde / convênio**.\n\n• **Remarcação Flexível**: Sem taxas com aviso prévio de até 24h pelo WhatsApp da clínica.\n• **Alinhamento de Pagamento**: Nossa recepção humana (**+55 61 9 9128-3139**) orienta todas as facilidades de pagamento na confirmação do horário.\n\nDeseja verificar os valores dos planos ou falar com a recepção?";
+  }
+
+  // 6. Exames de Sangue e Preparo Pré-Consulta
+  if (q.includes("exame") || q.includes("sangue") || q.includes("jejum") || q.includes("preparo")) {
+    return "Para aproveitar ao máximo sua consulta com o Dr. Luiz Tannuri:\n\n• **Exames Laboratoriais**: Se tiver exames de sangue realizados nos últimos 6 meses, separe os arquivos em PDF para análise detalhada durante a consulta.\n• **Alimentação Prévia**: Mantenha sua rotina habitual nos dias anteriores para mapearmos seus hábitos reais.\n• **Preparo para Bioimpedância InBody 120 (Presencial DF)**: Recomendamos jejum alimentar leve de 2 a 3 horas e evitar exercícios intensos imediatamente antes da aferição.\n\nDeseja escolher seu horário preferencial em **Ver Agenda Online**?";
+  }
+
+  // 7. TAG: Valores e Investimento nos Planos
+  if (q.includes("preco") || q.includes("valor") || q.includes("quanto custa") || q.includes("plano") || q.includes("investimento") || q.includes("assinatura") || q.includes("vip") || q.includes("12 semanas") || q.includes("6 meses")) {
+    return "O Dr. Luiz Tannuri atua com **transparência total**. Os planos estão disponíveis para **Teleconsulta Online** e **Presencialmente em Brasília (DF)**:\n\n• **Diagnóstico Inicial de Precisão (60 min)**:\n  - Online: **R$ 450** | Presencial DF: **R$ 750**\n  - Inclui 1 retorno em até 15 dias.\n\n• **Programa Metabolismo 12 Semanas** *(Mais Procurado)*:\n  - Online: **R$ 1.199** | Presencial DF: **R$ 1.999**\n  - Consulta inicial de 60 min + 3 retornos quinzenais, bioimpedância presencial quinzenal (InBody 120) e App Webidiet.\n\n• **Assinatura Acompanhamento Contínuo (Mensal)**:\n  - Online: **R$ 259/mês** | Presencial DF: **R$ 429/mês**\n  - Consulta de 60 min + retornos quinzenais e bioimpedância presencial quinzenal (InBody 120). Sem carência.\n\n• **Programa 6 Meses: Performance & Longevidade (VIP)**:\n  - Online: **R$ 1.999** | Presencial DF: **R$ 3.199**\n  - Programa de 24 semanas com 6 consultas de 60 min + 6 retornos dedicados, bioimpedância quinzenal (InBody 120) e estratégias para viagens.\n\n**Adicionais de Precisão:**\n• **Bioimpedância InBody 120**: **R$ 99** (Presencial • 20 min)\n• **Sensor Contínuo de Glicose (14 dias)**: **R$ 490**\n• **Consultoria de Cozinha & Meal Prep (60 min)**: **R$ 280**\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nQual dessas opções reflete melhor o que você busca hoje?";
+  }
+
+  // 8. TAG: Composição Corporal e InBody 120
+  if (q.includes("inbody") || q.includes("bioimpedancia") || q.includes("gordura") || q.includes("massa magra") || q.includes("composicao")) {
+    return "No consultório em Brasília, utilizamos o equipamento **InBody 120** para acompanhamento direto da composição corporal:\n\n1. **Massa Muscular Esquelética**: Avaliação direta da massa magra funcional para calibrar a ingestão de proteínas e macronutrientes.\n2. **Gordura Corporal**: Percentual exato e massa de gordura para monitorar a recomposição corporal real sem perda muscular.\n3. **Taxa Metabólica Basal (TMB)**: Estimativa precisa do gasto calórico em repouso.\n4. **Água Corporal Total**: Controle de hidratação e retenção hídrica.\n\nO exame está incluso quinzenalmente nos programas presenciais ou pode ser realizado avulso por **R$ 99**.\n\n**Evidência Científica Auditada:**\n• [InBody Clinical Research: Avaliação da Composição Corporal](https://inbody.com/research)\n\nDeseja agendar uma avaliação com o Dr. Tannuri?";
+  }
+
+  // 9. TAG: Quem é o Dr. Luiz Tannuri / Trajetória & Diplomas
+  if (q.includes("quem e") || q.includes("tannuri") || q.includes("formacao") || q.includes("jiu-jitsu") || q.includes("jiu jitsu") || q.includes("faixa preta") || q.includes("diploma") || q.includes("trajetoria") || q.includes("judo")) {
+    return "O **Dr. Luiz Tannuri** alia sólida formação acadêmica à vivência prática no mais alto nível esportivo:\n\n• **Graduado em Nutrição** pelo UNIEURO (Brasília/DF).\n• **Pós-Graduado em Nutrição Esportiva** (Faculdade Laboro / MEC) com mais de 10 anos de experiência clínica.\n• **Mestre de Jiu-Jitsu Faixa Preta 6º Grau** com mais de 30 anos de prática contínua, homologado oficialmente (2023 Fabricio International Team).\n• **Faixa Preta de Judô** (desde 2007) e experiência em MMA.\n• **Treinador Internacional** com atuação no Brasil, Austrália, EUA e Suécia.\n\nVocê pode inspecionar todos os 4 diplomas e certificações oficiais diretamente na seção **Trajetória & Diplomas** do site!\n\n**Evidência Científica Auditada:**\n• [JISSN: Timing de Macronutrientes e Nutrição Esportiva](https://jissn.biomedcentral.com)";
+  }
+
+  // 10. TAG: Atendimento para Viagens e Online
+  if (q.includes("viaja") || q.includes("viagem") || q.includes("online") || q.includes("exterior") || q.includes("telemedicina") || q.includes("webidiet")) {
+    return "O Dr. Luiz Tannuri atende regularmente pacientes que viajam com frequência ou residem fora de Brasília e no exterior (EUA, Alemanha, Oriente Médio):\n\n1. **Teleconsultas de 60 min**: Prontuário digital seguro e videoconferência em alta definição (Resolução CFN 666/2020).\n2. **Estratégias para Viagens de Negócios**: Adaptação prática para manter seu rendimento em voos, hotéis, restaurantes e compromissos sociais.\n3. **App Webidiet**: Organização prática da rotina alimentar diária na palma da mão.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN nº 666/2020](https://www.cfn.org.br)\n\nPodemos planejar seu atendimento 100% online ou híbrido conforme sua agenda!";
+  }
+
+  // 11. TAG: Agendamento e Contato Humano
+  if (q.includes("agendar") || q.includes("marcar") || q.includes("consulta") || q.includes("whatsapp") || q.includes("contato") || q.includes("recepcao") || q.includes("humano") || q.includes("telefone") || q.includes("horario") || q.includes("agenda")) {
+    return "Será um prazer acolher você! O consultório do Dr. Luiz Tannuri está situado em **Brasília (DF)**, além de oferecermos teleconsultas online para pacientes no Brasil e exterior.\n\nPara falar diretamente com nossa **recepção humana**, nosso WhatsApp oficial é **+55 61 9 9128-3139** (você também pode clicar no botão **Falar no WhatsApp** logo abaixo).\n\nPara registrar imediatamente seu dia e turno de preferência — como o **Diagnóstico Inicial de 60 minutos** (R$ 450 online ou R$ 750 presencial, com 1 retorno incluso em 15 dias) — clique em **Ver Agenda Online** no topo da página.\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Resolução CFN 666/2020](https://www.cfn.org.br)\n\nDeseja falar com a equipe humana no WhatsApp agora ou explorar os planos?";
+  }
+
+  return "Olá! Sou a Concierge Clínica do Dr. Luiz Tannuri (Nutrição Esportiva & Precisão Metabólica). Posso orientar você sobre:\n\n• **Planos e Valores** (Diagnóstico Inicial de 60 min, Programa 12 Semanas, Assinatura Mensal e VIP 6 Meses)\n• **Exame de Bioimpedância InBody 120** e Adicionais de Precisão\n• **Atendimento Presencial em Brasília (DF)** ou **Teleconsulta Online HD**\n• **Trajetória Acadêmica e Esportiva** do Dr. Luiz Tannuri\n\n**Evidência Científica Auditada:**\n• [Conselho Federal de Nutricionistas: Código de Ética e Transparência](https://www.cfn.org.br)\n\nQual objetivo de saúde ou performance você gostaria de priorizar hoje?";
+}
 
 // Appointments & CRM Persistent Engine
 interface StoredAppointmentDoc {
@@ -312,75 +294,11 @@ app.post("/api/concierge", async (req, res) => {
     });
   }
 
-  // Try server-side Gemini API if key is present
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (apiKey) {
-    try {
-      const ai = new GoogleGenAI({ apiKey });
-      
-      let response;
-      try {
-        response = await ai.models.generateContent({
-          model: "gemini-3.8-flash",
-          contents: [
-            {
-              role: "user",
-              parts: [
-                {
-                  text: `[CONTEXTO DO USUÁRIO NO APP: ${JSON.stringify(context || {})}]\n\nMENSAGEM DO VISITANTE: ${message}`
-                }
-              ]
-            }
-          ],
-          config: {
-            systemInstruction: CANONICAL_SYSTEM_PROMPT,
-            temperature: 0.3,
-            maxOutputTokens: 4096,
-          }
-        });
-      } catch (err38: any) {
-        try {
-          response = await ai.models.generateContent({
-            model: "gemini-3.6-flash",
-            contents: [
-              {
-                role: "user",
-                parts: [
-                  {
-                    text: `[CONTEXTO DO USUÁRIO NO APP: ${JSON.stringify(context || {})}]\n\nMENSAGEM DO VISITANTE: ${message}`
-                  }
-                ]
-              }
-            ],
-            config: {
-              systemInstruction: CANONICAL_SYSTEM_PROMPT,
-              temperature: 0.3,
-              maxOutputTokens: 4096,
-            }
-          });
-        } catch (err36: any) {
-          console.warn("[Concierge] Gemini 3.8/3.6 failed:", err36?.message || err36);
-        }
-      }
-
-      const replyText = response?.text;
-      if (replyText && replyText.trim().length > 0) {
-        return res.json({
-          reply: replyText.trim(),
-          source: "gemini",
-          conversation_id: conversation_id || Date.now().toString()
-        });
-      }
-    } catch (err: any) {
-      console.warn("[Concierge] Gemini API call failed, using deterministic fallback:", err?.message || err);
-    }
-  }
-
-  // Deterministic fallback if API key missing or call fails
-  const fallbackReply = getDeterministicFallback(message, context);
+  // Motor Clínico Interno (Zero chave de API externa / Custo R$ 0,00)
+  const reply = resolveClinicalAssistantReply(message, context);
   return res.json({
-    reply: fallbackReply,
-    source: "deterministic_fallback",
+    reply,
+    source: "clinical_internal_engine",
     conversation_id: conversation_id || Date.now().toString()
   });
 });
@@ -644,8 +562,8 @@ app.get("/api/admin/export-csv", (_req, res) => {
   return res.send(csvContent);
 });
 
-// POST /api/admin/tot-analysis: Síntese Tree of Thoughts para Otimização de Atendimento
-app.post("/api/admin/tot-analysis", async (req, res) => {
+// POST /api/admin/tot-analysis: Síntese Tree of Thoughts Local (Zero API Externa / Custo Zero)
+app.post("/api/admin/tot-analysis", (req, res) => {
   const { appointmentId } = req.body;
   const items = loadAppointments();
   const appointment = items.find(a => a.id === appointmentId || a.bookingCode === appointmentId);
@@ -654,57 +572,37 @@ app.post("/api/admin/tot-analysis", async (req, res) => {
     return res.status(404).json({ error: "Agendamento não encontrado para análise ToT." });
   }
 
-  const prompt = `Você é o estrategista clínico e comercial do Dr. Luiz Tannuri (Nutrição Esportiva, Precisão Metabólica e Longevidade).
-Aplique o framework Tree of Thoughts (ToT) para analisar esta solicitação e prescrever as 3 melhores ações de fechamento da recepção:
+  const isPresencial = appointment.modality === "presencial";
+  const modalityContext = isPresencial
+    ? `Atendimento Presencial em Brasília (DF)${appointment.isFastingRecommended ? " — orientar jejum leve de 2 a 3h para aferição precisa na bioimpedância InBody 120" : " — destacar estrutura privativa com avaliação física e bioimpedância InBody 120"}`
+    : "Teleconsulta Online HD — reforçar envio prévio do link criptografado, prontuário digital seguro (CFN 666/2020) e análise de exames em PDF";
 
-DADOS DO PACIENTE:
-- Nome: ${appointment.patientName}
-- Serviço Solicitado: ${appointment.serviceName} (${appointment.modality}) - ${appointment.formattedPrice}
-- Data/Horário Escolhido: ${appointment.appointmentDate} às ${appointment.slotTime}
-- Objetivo Declarado: ${appointment.primaryGoal}
-- Observações: ${appointment.medicalNotes || "Nenhuma"}
+  const retentionSuggestion = appointment.serviceId === "diagnostico_inicial"
+    ? "Após a consulta de 60 min e o retorno de 15 dias, apresentar de forma consultiva a transição natural para o Programa Metabolismo 12 Semanas ou Assinatura Contínua para sustentar os ganhos."
+    : appointment.serviceId === "programa_metabolico" || appointment.serviceId === "programa_metabolismo_12semanas"
+    ? "Garantir desde o primeiro dia o cadastro no App Webidiet e o pré-agendamento dos 3 retornos quinzenais para máxima adesão."
+    : appointment.serviceId === "programa_longevidade_vip"
+    ? "Ativar protocolo prioritário VIP de 24 semanas, mapeando calendário de viagens e rotina executiva/esportiva logo no acolhimento."
+    : "Alinhar cadência quinzenal de acompanhamento contínuo e envio prévio de exames laboratoriais dos últimos 6 meses.";
 
-ESTRUTURE SUA RESPOSTA EM 3 RAMOS DE PENSAMENTO (ToT):
-1. Ramo Rápido (Acolhimento imediato via WhatsApp com script personalizado).
-2. Ramo de Valor Clínico (Como ancorar os benefícios do InBody 120 e da metodologia do Dr. Tannuri para este objetivo).
-3. Ramo de Retenção/Upgrade (Sugestão ética de plano futuro ou acompanhamento contínuo).
-Conclua com o Script de Mensagem exato pronto para a secretária enviar no WhatsApp.`;
+  const deterministicToT = `### Análise Estratégica Tree of Thoughts (ToT) — Motor Clínico Interno
 
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (apiKey) {
-    try {
-      const ai = new GoogleGenAI({ apiKey });
-      const response = await ai.models.generateContent({
-        model: "gemini-3.8-flash",
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        config: { temperature: 0.2, maxOutputTokens: 2048 }
-      });
-      const text = response?.text;
-      if (text) {
-        return res.json({ analysis: text, source: "gemini-tot" });
-      }
-    } catch (e: any) {
-      console.warn("[ToT Analysis] Gemini call failed, using deterministic ToT:", e?.message || e);
-    }
-  }
-
-  // Fallback determinístico de alto padrão
-  const deterministicToT = `### Análise Tree of Thoughts (ToT) — Dr. Luiz Tannuri
-
-**1. Ramo de Acolhimento Imediato (WhatsApp)**:
-- Paciente qualificado demonstrando foco em "${appointment.primaryGoal}".
-- Abordagem recomendada: Validar o horário ${appointment.slotTime} de ${appointment.appointmentDate} parabenizando pela iniciativa em priorizar a saúde metabólica.
+**1. Ramo Rápido de Acolhimento (WhatsApp em até 15 min)**:
+- Paciente **${appointment.patientName}** registrou interesse em **${appointment.serviceName}** (${appointment.formattedPrice}) para **${appointment.appointmentDate} às ${appointment.slotTime}**.
+- Objetivo clínico central declarado: *"${appointment.primaryGoal}"*${appointment.medicalNotes ? ` | Observação: *"${appointment.medicalNotes}"*` : ""}.
+- Conduta imediata: Validar disponibilidade na agenda do Dr. Luiz Tannuri e responder com acolhimento nominal para consolidar o compromisso.
 
 **2. Ramo de Ancoragem de Valor Clínico**:
-- Destacar que o atendimento inclui a avaliação segmentada InBody 120 (se presencial em Brasília) e o método testado em mais de 10 anos de prática clínica e no esporte de alta performance com o Dr. Luiz Tannuri.
+- Modalidade escolhida: ${modalityContext}.
+- Conectar diretamente o objetivo do paciente à metodologia de mais de 10 anos de prática clínica e vivência esportiva de alto rendimento do Dr. Luiz Tannuri, além da emissão de Nota Fiscal para reembolso em convênios.
 
-**3. Ramo de Ação Favorável ao Fechamento**:
-- Enviar confirmação com instruções de preparo pré-consulta (jejum leve para bioimpedância se aplicável) e dados do consultório.
+**3. Ramo de Evolução & Retenção Ética**:
+- ${retentionSuggestion}
 
-**Script Sugerido para a Recepção:**
-"Olá, ${appointment.patientName}! Aqui é da equipe do Dr. Luiz Tannuri em Brasília. Recebemos sua preferência de horário para o ${appointment.serviceName} no dia ${appointment.appointmentDate} às ${appointment.slotTime} (Protocolo: ${appointment.bookingCode}). O Dr. Luiz já avaliou seu objetivo focado em ${appointment.primaryGoal}. Podemos confirmar esse horário para você?"`;
+**Script Pronto para a Recepção Enviar no WhatsApp:**
+"Olá, ${appointment.patientName}! Tudo bem? Aqui é da recepção clínica do Dr. Luiz Tannuri. Recebemos sua solicitação para **${appointment.serviceName}** (${isPresencial ? "Presencial em Brasília" : "Teleconsulta Online HD"}) na data **${appointment.appointmentDate} às ${appointment.slotTime}** (Protocolo: ${appointment.bookingCode}). Já registramos seu foco em *${appointment.primaryGoal}*${isPresencial && appointment.isFastingRecommended ? " e lembramos da recomendação de jejum leve de 2 a 3h para sua avaliação física" : ""}. Podemos confirmar oficialmente este horário na agenda para você?"`;
 
-  return res.json({ analysis: deterministicToT, source: "deterministic-tot" });
+  return res.json({ analysis: deterministicToT, source: "clinical_internal_tot" });
 });
 
 
